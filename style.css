@@ -107,7 +107,6 @@ html { scroll-behavior: smooth; }
 }
 
 /* --- THE STICKY TITLES --- */
-/* Z-Index 500 ensures they float ABOVE content cards (Z-Index 1) */
 .sticky-hero, .sticky-title {
     position: sticky;
     top: var(--header-height);
@@ -117,20 +116,31 @@ html { scroll-behavior: smooth; }
     margin: 0 0 40px 0;
     z-index: 500;
 
-    /* Styles are now handled by JS for smooth gradient */
     background: transparent;
     border-bottom: 1px solid transparent;
     backdrop-filter: blur(0px);
     -webkit-backdrop-filter: blur(0px);
 
-    /* Small transition for properties JS doesn't animate continuously */
-    transition: font-size 0.3s ease;
+    transition: all 0.3s ease-out;
 }
 
 .sticky-hero {
     font-size: 3rem;
     font-weight: 700;
     line-height: 1.1;
+}
+
+/* --- THE SLAB EFFECT (Stuck State) --- */
+.sticky-hero.is-stuck, .sticky-title.is-stuck {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+.sticky-title.is-stuck {
+    border-bottom: 2px solid var(--accent);
 }
 
 /* --- SECTIONS --- */
@@ -183,7 +193,6 @@ html { scroll-behavior: smooth; }
     background: rgba(255, 255, 255, 0.8);
 }
 
-/* Dark Mode Overrides */
 .dark-bg {
     background-color: rgba(10, 10, 10, 0.95);
     color: white;
@@ -193,7 +202,6 @@ html { scroll-behavior: smooth; }
     backdrop-filter: blur(10px);
 }
 .dark-bg .sticky-title { color: white; }
-
 .dark-bg p { color: #ccc; }
 
 .clean-list { list-style: none; padding: 0; text-align: left; width: 100%; }
@@ -211,34 +219,48 @@ html { scroll-behavior: smooth; }
 
 .copyright { font-size: 0.8rem; opacity: 0.5; margin-top: 20px; }
 
-/* --- MOBILE RESPONSIVENESS --- */
+/* -------------------------------------- */
+/* --- MOBILE RESPONSIVENESS TWEAKS --- */
+/* -------------------------------------- */
 @media (max-width: 768px) {
-    /* 1. Adjust Header Padding */
+    /* 1. Header Layout */
     .header-inner { padding: 0 20px; }
 
-    /* 2. Hide Nav Links on small screens (Optional: or make them smaller) */
-    /* For a portfolio, it's often cleaner to just keep them small or wrap them */
-    .nav-links { gap: 15px; }
-    .nav-links a { font-size: 0.8rem; }
+    /* 2. Hide specific elements to save space */
+    .role, .separator { display: none; } /* Hide 'Research Scholar' on phones */
 
-    /* 3. Scale down the Hero Text */
-    .sticky-hero { font-size: 2rem; padding: 15px 0; }
-    .hero-subtext { font-size: 1.1rem; padding: 0 20px; }
+    /* 3. Navigation Links (Horizontal Scroll) */
+    .nav-links {
+        gap: 15px;
+        overflow-x: auto; /* Allow scrolling if links overflow */
+        padding-bottom: 5px; /* Space for scrollbar */
+        max-width: 160px; /* Limit width so it doesn't hit the name */
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
+    }
+    .nav-links::-webkit-scrollbar { display: none; } /* Hide scrollbar for clean look */
+    .nav-links a { font-size: 0.85rem; }
 
-    /* 4. Adjust the Spacer so image doesn't overlap text on short screens */
-    .hero-spacer { height: 400px; }
+    /* 4. Hero Section Tweaks */
+    .hero-spacer { height: 350px; } /* Reduce gap since image is smaller */
 
-    /* 5. Adjust Content Padding */
-    .content-section { padding: 0 0 60px 0; }
-    .card, .item { padding: 25px; }
+    .sticky-hero {
+        font-size: 1.8rem; /* Smaller main title */
+        padding: 15px 0;
+    }
+    .hero-subtext { font-size: 1.1rem; padding: 0 10px; }
 
-    /* 6. Mobile Font Sizes */
+    /* 5. Content Adjustments */
+    .card, .item { padding: 25px; } /* Less padding inside cards */
+    .centered-container { padding: 0 15px; }
+
     h3 { font-size: 1.2rem; }
-    p { font-size: 1rem; }
 }
-
 .separator {
-    /* The 0 is top/bottom, the 20px is left/right */
-    margin: 0 20px;
+    /* 0 = top/bottom spacing */
+    /* 15px = left/right spacing (Adjust this number to make it wider/narrower) */
+    margin: 0 15px;
+
     color: #ccc;
+    display: inline-block; /* Ensures margin works correctly */
 }

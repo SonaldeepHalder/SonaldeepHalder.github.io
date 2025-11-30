@@ -10,19 +10,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const stickyHeadings = document.querySelectorAll('.sticky-title, .sticky-hero');
 
     const maxScroll = 400;
-    const startSize = 300;
-    const endSize = 50;
-    const startPhotoY = 220;
+
+    // --- DYNAMIC CONFIGURATION FOR MOBILE VS DESKTOP ---
+    // We check the window width to set sizes
+    const isMobile = window.innerWidth < 768;
+
+    const startSize = isMobile ? 180 : 300; // Smaller start on mobile
+    const endSize = isMobile ? 40 : 50;     // Smaller end on mobile
+    const startPhotoY = isMobile ? 140 : 220; // Less distance from top on mobile
+
     let startPhotoX = 0;
 
     const recalculatePositions = () => {
+        // Reset to measure natural position
         photoWrapper.style.transform = '';
         photoWrapper.style.width = `${endSize}px`;
+
         const rect = photoWrapper.getBoundingClientRect();
         const originX = rect.left;
         const screenCenter = window.innerWidth / 2;
         const halfImage = startSize / 2;
+
+        // Calculate center
         startPhotoX = (screenCenter - halfImage) - originX;
+
         updateUI();
     };
 
@@ -44,7 +55,10 @@ document.addEventListener('DOMContentLoaded', () => {
         header.style.borderBottom = `1px solid rgba(0, 0, 0, ${progress * 0.05})`;
         header.style.backdropFilter = `blur(${progress * 12}px)`;
         header.style.webkitBackdropFilter = `blur(${progress * 12}px)`;
+
         navLinks.style.opacity = progress;
+        // On mobile, we might want to disable pointer events on nav when hidden
+        navLinks.style.pointerEvents = progress > 0.5 ? 'auto' : 'none';
 
         if (progress > 0.8) {
             identityText.classList.add('visible');
@@ -52,32 +66,24 @@ document.addEventListener('DOMContentLoaded', () => {
             identityText.classList.remove('visible');
         }
 
-        // --- B. STICKY SLAB GRADIENT LOGIC (New) ---
+        // --- B. STICKY SLAB GRADIENT LOGIC ---
         updateStickyHeaders();
     };
 
     const updateStickyHeaders = () => {
-        const triggerPoint = 80; // The header height (where it sticks)
-        const fadeRange = 150;   // How far before sticking does the fade start?
+        const triggerPoint = 80;
+        const fadeRange = 150;
 
         stickyHeadings.forEach(heading => {
-            // Get position relative to viewport
             const top = heading.getBoundingClientRect().top;
-
-            // Calculate "Stuckness" (0 = far away, 1 = fully stuck)
-            // We start calculating when it enters the "Fade Range"
             let stuckProgress = 0;
 
             if (top <= triggerPoint) {
-                stuckProgress = 1; // It is stuck
+                stuckProgress = 1;
             } else if (top < triggerPoint + fadeRange) {
-                // Calculate percentage between 0 and 1
                 stuckProgress = 1 - ((top - triggerPoint) / fadeRange);
             }
 
-            // Apply the styles based on progress
-            // Max Opacity = 0.7 (Glassy)
-            // Max Blur = 20px
             const alpha = stuckProgress * 0.7;
             const blurVal = stuckProgress * 20;
             const shadowAlpha = stuckProgress * 0.08;
@@ -92,7 +98,14 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     window.addEventListener('scroll', updateUI);
-    window.addEventListener('resize', recalculatePositions);
+    // Reload on resize to handle orientation changes correctly
+    window.addEventListener('resize', () => {
+        // Only reload if width changes significantly (prevents mobile url bar jumps)
+        if (Math.abs(window.innerWidth - (window.lastWidth || window.innerWidth)) > 50) {
+            location.reload();
+        }
+        window.lastWidth = window.innerWidth;
+    });
 
     const revealElements = document.querySelectorAll('.reveal');
     const revealObserver = new IntersectionObserver((entries) => {
@@ -112,7 +125,10 @@ function initBokeh() {
     let width, height;
     let circles = [];
 
-    const circleCount = 15;
+    // Reduce circle count on mobile for performance
+    const isMobile = window.innerWidth < 768;
+    const circleCount = isMobile ? 8 : 15;
+
     const colors = [
         'rgba(45, 140, 255, 0.3)',
         'rgba(180, 100, 255, 0.25)',
