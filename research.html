@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Research | Sonaldeep Halder</title>
+  <link rel="stylesheet" href="css/shared.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<canvas id="bokeh-canvas"></canvas>
+
+<header class="fixed-header">
+  <div class="header-inner">
+    <div class="identity-group">
+      <div class="photo-wrapper-static">
+        <img src="assets/photoForWebsiteCropped.jpg" alt="Profile" class="profile-img">
+      </div>
+      <div class="text-identity" id="identity-text">
+        <span class="name">Sonaldeep Halder</span>
+        <span class="separator">|</span>
+        <span class="role">Research Scholar</span>
+      </div>
+    </div>
+
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="research.html">Research</a>
+      <a href="publications.html">Publications</a>
+      <a href="cv.html">CV</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="hero-text-container">
+    <h1 class="page-title">Research</h1>
+    <p class="hero-subtext">Bridging quantum computing, chemistry, and machine learning</p>
+  </div>
+</section>
+
+<main class="content-area">
+
+  <section class="content-section reveal">
+    <h2 class="sticky-title">Research Overview</h2>
+    <div class="centered-container">
+      <p style="text-align:left; line-height:1.8; font-size:1.05rem;">
+        My research sits at the intersection of quantum computing and quantum chemistry, with a focus on making molecular simulation practical on near-term hardware. Working in the group of <strong>Prof. Rahul Maitra</strong> at IIT Bombay, I develop resource-efficient quantum algorithms for electronic structure. Pre-fault-tolerant quantum devices — known as NISQ machines — are limited by noise and short coherence times, which means the algorithms we run must be exceptionally resource-efficient.
+      </p>
+      <p style="text-align:left; line-height:1.8; font-size:1.05rem; margin-top: 16px;">
+        To address this, I develop methods that leverage Generative AI and machine learning — particularly Restricted Boltzmann Machines (RBM) — to intelligently construct quantum circuits (ansatzes) that encode the electronic structure of molecules with minimal gate depth. I also work on the Projective Quantum Eigensolver (PQE) framework and dynamic adaptive ansatz construction strategies, incorporating many-body perturbation theory for operator screening. My work has accumulated 112 citations. The goal is to reduce quantum resource requirements without sacrificing accuracy — enabling meaningful quantum advantage on today's hardware.
+      </p>
+    </div>
+  </section>
+
+  <section class="content-section reveal">
+    <h2 class="sticky-title">Research Themes</h2>
+    <div class="centered-container">
+
+      <div class="card">
+        <h3>Projective Quantum Eigensolver (PQE) &amp; VQE Frameworks</h3>
+        <p>Designing the Projective Quantum Eigensolver (PQE) and variational quantum eigensolver (VQE) variants — including adaptive ansatz construction — that accurately compute ground-state molecular energies. My work introduces Zero Noise Extrapolation (ZNE-PQE) and adiabatically decoupled subsystem evolution strategies to push accuracy on real hardware, while supervised machine learning aids dimensionality reduction in the parameter optimization landscape.</p>
+      </div>
+
+      <div class="card">
+        <h3>Generative AI for Ansatz Construction</h3>
+        <p>Using Restricted Boltzmann Machines (RBM) and other generative machine learning models — trained on the physics of electron correlation — to propose chemistry-inspired ansatz circuits. Rather than fixed templates, these dynamic ansatzes adapt to the molecule, predicting dominant high-rank determinants from low-rank training data. Bayesian hyperparameter optimization ensures efficient performance with minimal training overhead.</p>
+      </div>
+
+      <div class="card">
+        <h3>NISQ-Era Resource Efficiency</h3>
+        <p>Many-body perturbation theoretical measures and supervised machine learning methods to screen and discard low-impact quantum gates before circuit execution. This dramatically reduces gate count and qubit requirements, making quantum chemistry calculations tractable on current hardware generations. Methods include the COMPASS protocol for operator commutativity prescreening and neural error mitigation techniques compatible with shallow ansatz circuits.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="content-section reveal">
+    <h2 class="sticky-title">Ongoing Projects</h2>
+    <div class="centered-container">
+
+      <div class="card">
+        <h3>Adaptive Generative Models for Multi-Reference Systems</h3>
+        <p>Extending the generative AI ansatz framework to strongly correlated, multi-reference molecular systems — a notoriously hard problem for both classical and quantum approaches. Current work explores how generative models can be conditioned on multi-configurational reference states.</p>
+      </div>
+
+      <div class="card">
+        <h3>Noise-Aware Circuit Optimization</h3>
+        <p>Developing hardware-aware compilation strategies that tailor circuit structure to the specific noise profile of a target quantum device, integrating seamlessly with the dynamic ansatz generation pipeline.</p>
+      </div>
+
+      <div class="card">
+        <h3>Benchmarking on Real Quantum Hardware</h3>
+        <p>Running and validating developed algorithms on IBM Quantum devices via Qiskit, including experiments on IBM Heron R2 and R3 quantum processors at scales up to 52 qubits. These large-scale demonstrations characterize the gap between ideal simulation and real-hardware performance, feeding results back into algorithm and circuit design for quantum-centric supercomputing.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="content-section dark-bg reveal">
+    <h2 class="sticky-title">Collaborate</h2>
+    <div class="centered-container">
+      <p>I am open to collaborations in quantum algorithms, quantum chemistry, and machine learning for scientific computing.</p>
+      <div class="buttons">
+        <a href="contact.html" class="btn">Get in Touch</a>
+      </div>
+      <div class="copyright">
+        <p>&copy; 2025 Sonaldeep Halder. All rights reserved.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="js/shared.js"></script>
+</body>
+</html>

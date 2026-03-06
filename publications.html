@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Publications | Sonaldeep Halder</title>
+  <link rel="stylesheet" href="css/shared.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+<canvas id="bokeh-canvas"></canvas>
+
+<header class="fixed-header">
+  <div class="header-inner">
+    <div class="identity-group">
+      <div class="photo-wrapper-static">
+        <img src="assets/photoForWebsiteCropped.jpg" alt="Profile" class="profile-img">
+      </div>
+      <div class="text-identity" id="identity-text">
+        <span class="name">Sonaldeep Halder</span>
+        <span class="separator">|</span>
+        <span class="role">Research Scholar</span>
+      </div>
+    </div>
+
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="research.html">Research</a>
+      <a href="publications.html">Publications</a>
+      <a href="cv.html">CV</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="hero-text-container">
+    <h1 class="page-title">Publications</h1>
+    <p class="hero-subtext">Peer-reviewed research in quantum computing and quantum chemistry</p>
+  </div>
+</section>
+
+<main class="content-area">
+
+  <!-- ===== 2025 ===== -->
+  <section class="content-section reveal">
+    <h2 class="sticky-title">2025</h2>
+    <div class="centered-container">
+
+      <div class="card">
+        <p class="meta" style="font-size:0.8rem; color:#999; margin:0 0 8px 0;">1</p>
+        <h3>Construction of Chemistry-Inspired Dynamic Ansatz Utilizing Generative Machine Learning</h3>
+        <p class="meta" style="margin: 6px 0 4px 0;">
+          <strong>Sonaldeep Halder</strong>, Kartikey Anand, Rahul Maitra
+        </p>
+        <p class="meta" style="color: var(--accent); font-weight:500; margin-bottom:4px;">
+          The Journal of Physical Chemistry A, 2025, 129(26), 5889–5900
+        </p>
+        <div class="buttons" style="margin-top:12px; margin-bottom:0;">
+          <a href="https://doi.org/10.1021/acs.jpca.5c02346" class="btn" target="_blank" rel="noopener">DOI</a>
+        </div>
+        <details>
+          <summary>Show Abstract</summary>
+          <p>Generative machine learning models like the Restricted Boltzmann Machine (RBM) provide a practical approach for ansatz construction within the quantum computing framework. This work introduces a method that efficiently leverages RBM and many-body perturbative measures to build a compact chemistry-inspired ansatz for determining accurate molecular energetics. By training on low-rank determinants derived from an approximate wavefunction, RBM predicts the key high-rank determinants that dominate the ground-state wavefunction. A shallow depth ansatz is constructed to explicitly incorporate these dominant determinants after dynamically decomposing them into low-rank components and applying many-body perturbative measures for further screening. The method requires no additional measurements beyond the initial training phase. It incorporates Bayesian hyperparameter optimization for the RBM, ensuring efficient performance with minimal training data. This approach facilitates the efficient computation of molecular properties, paving the way for exploring new chemical phenomena with near-term quantum computers.</p>
+        </details>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== 2024 ===== -->
+  <section class="content-section reveal">
+    <h2 class="sticky-title">2024</h2>
+    <div class="centered-container">
+
+      <div class="card">
+        <p class="meta" style="font-size:0.8rem; color:#999; margin:0 0 8px 0;">2</p>
+        <h3>Machine learning assisted construction of a shallow depth dynamic ansatz for noisy quantum hardware</h3>
+        <p class="meta" style="margin: 6px 0 4px 0;">
+          <strong>Sonaldeep Halder</strong>, Anish Dey, Chinmay Shrikhande, Rahul Maitra
+        </p>
+        <p class="meta" style="color: var(--accent); font-weight:500; margin-bottom:4px;">
+          Chemical Science (RSC), 2024, 15(9), 3279–3289
+        </p>
+        <div class="buttons" style="margin-top:12px; margin-bottom:0;">
+          <a href="https://doi.org/10.1039/D3SC05807G" class="btn" target="_blank" rel="noopener">DOI</a>
+        </div>
+        <details>
+          <summary>Show Abstract</summary>
+          <p>The development of various dynamic ansatz-constructing techniques has ushered in a new era, making the practical exploitation of Noisy Intermediate-Scale Quantum (NISQ) hardware for molecular simulations increasingly viable. However, such ansatz construction protocols incur substantial measurement costs during their execution. This work develops a novel protocol that capitalizes on regenerative machine learning methodologies and many-body perturbation theoretical measures to construct a highly expressive and shallow ansatz within the variational quantum eigensolver (VQE) framework with limited measurement costs. The protocol leverages Restricted Boltzmann Machines (RBM) trained on low-rank Hilbert space expansions to identify dominant excited determinants, which are iteratively incorporated through low-rank decomposition. The resulting ansatz demonstrates robustness to hardware noise and compatibility with neural error mitigation techniques, essential for practical implementation on near-term quantum devices.</p>
+        </details>
+      </div>
+
+      <div class="card">
+        <p class="meta" style="font-size:0.8rem; color:#999; margin:0 0 8px 0;">3</p>
+        <h3>Projective quantum eigensolver via adiabatically decoupled subsystem evolution: A resource efficient approach to molecular energetics in noisy quantum computers</h3>
+        <p class="meta" style="margin: 6px 0 4px 0;">
+          Chayan Patra, <strong>Sonaldeep Halder</strong>, Rahul Maitra
+        </p>
+        <p class="meta" style="color: var(--accent); font-weight:500; margin-bottom:4px;">
+          The Journal of Chemical Physics, 2024, 160, 214122
+        </p>
+        <div class="buttons" style="margin-top:12px; margin-bottom:0;">
+          <a href="https://doi.org/10.1063/5.0210854" class="btn" target="_blank" rel="noopener">DOI</a>
+        </div>
+        <details>
+          <summary>Show Abstract</summary>
+          <p>This work encompasses the development of a projective formalism that aims to compute ground-state energies of molecular systems accurately using NISQ hardware in a resource-efficient manner. The approach relies upon the formulation of a bipartitely decoupled parameterized ansatz within the disentangled unitary coupled cluster (dUCC) framework based on the principles of synergetics, where such decoupling emulates the total parameter optimization in a lower dimensional manifold, while a mutual synergistic relationship among the parameters is exploited to ensure characteristic accuracy. The method produces shallow circuits requiring fewer measurements and demonstrates improved noise resilience.</p>
+        </details>
+      </div>
+
+      <div class="card">
+        <p class="meta" style="font-size:0.8rem; color:#999; margin:0 0 8px 0;">4</p>
+        <h3>Toward a resource-optimized dynamic quantum algorithm via non-iterative auxiliary subspace corrections</h3>
+        <p class="meta" style="margin: 6px 0 4px 0;">
+          Chayan Patra, Debaarjun Mukherjee, <strong>Sonaldeep Halder</strong>, Dibyendu Mondal, Rahul Maitra
+        </p>
+        <p class="meta" style="color: var(--accent); font-weight:500; margin-bottom:4px;">
+          The Journal of Chemical Physics, 2024, 161, 144119
+        </p>
+        <div class="buttons" style="margin-top:12px; margin-bottom:0;">
+          <a href="https://doi.org/10.1063/5.0229137" class="btn" target="_blank" rel="noopener">DOI</a>
+        </div>
+        <details>
+          <summary>Show Abstract</summary>
+          <p>A novel theoretical framework that relies on the segregation of an ansatz into a dynamically selected core principal component, which is adiabatically decoupled from remaining operators. This enables shallow-depth circuit computations for the core, while the effect of the remaining auxiliary component is folded into the energy function via a cost-efficient non-iterative correction requiring no additional quantum resources. Analytical methods to predict auxiliary parameters are developed and validated on strongly correlated molecular systems.</p>
+        </details>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== 2023 ===== -->
+  <section class="content-section reveal">
+    <h2 class="sticky-title">2023</h2>
+    <div class="centered-container">
+
+      <div class="card">
+        <p class="meta" style="font-size:0.8rem; color:#999; margin:0 0 8px 0;">5</p>
+        <h3>Development of zero-noise extrapolated projective quantum algorithm for accurate evaluation of molecular energetics in noisy quantum devices</h3>
+        <p class="meta" style="margin: 6px 0 4px 0;">
+          Chinmay Shrikhande, <strong>Sonaldeep Halder</strong>, Rahul Maitra
+        </p>
+        <p class="meta" style="color: var(--accent); font-weight:500; margin-bottom:4px;">
+          The Journal of Chemical Physics, 2023, 159, 114115
+        </p>
+        <div class="buttons" style="margin-top:12px; margin-bottom:0;">
+          <a href="https://doi.org/10.1063/5.0166433" class="btn" target="_blank" rel="noopener">DOI</a>
+        </div>
+        <details>
+          <summary>Show Abstract</summary>
+          <p>The recently developed Projective Quantum Eigensolver (PQE) offers an elegant procedure to evaluate the ground state energies of molecular systems on quantum computers. However, the noise in available quantum hardware can result in significant errors in computed outcomes, limiting the realization of quantum advantage. Although PQE comes equipped with some degree of inherent noise resilience, any practical implementation with apposite accuracy would require additional routines to suppress the errors further. In this work, the authors propose a way to enhance the efficiency of PQE by developing an optimal framework for introducing Zero Noise Extrapolation (ZNE) in the nonlinear iterative procedure that outlines the PQE, leading to the formulation of ZNE-PQE. A detailed analysis of how various components involved in it affect the accuracy and efficiency of the reciprocated energy convergence trajectory is provided.</p>
+        </details>
+      </div>
+
+      <div class="card">
+        <p class="meta" style="font-size:0.8rem; color:#999; margin:0 0 8px 0;">6</p>
+        <h3>Machine learning aided dimensionality reduction toward a resource efficient projective quantum eigensolver: Formal development and pilot applications</h3>
+        <p class="meta" style="margin: 6px 0 4px 0;">
+          <strong>Sonaldeep Halder</strong>, Chayan Patra, Dibyendu Mondal, Rahul Maitra
+        </p>
+        <p class="meta" style="color: var(--accent); font-weight:500; margin-bottom:4px;">
+          The Journal of Chemical Physics, 2023, 158, 244101
+        </p>
+        <div class="buttons" style="margin-top:12px; margin-bottom:0;">
+          <a href="https://doi.org/10.1063/5.0155009" class="btn" target="_blank" rel="noopener">DOI</a>
+        </div>
+        <details>
+          <summary>Show Abstract</summary>
+          <p>The Projective Quantum Eigensolver (PQE) involves iterative optimization of nonlinearly coupled parameters. The authors demonstrate that such a nonlinear optimization problem can be perceived as a collective dynamic interplay of fast and slow relaxing modes. The synergy among the parameters is exploited using an on-the-fly supervised machine learning protocol that dynamically casts the PQE optimization into a smaller subspace. The proposed methodology ensures a drastic reduction in the number of quantum measurements necessary for the parameter updates without compromising the characteristic accuracy. Analytical and numerical demonstrations confirm resilience to NISQ device noise.</p>
+        </details>
+      </div>
+
+      <div class="card">
+        <p class="meta" style="font-size:0.8rem; color:#999; margin:0 0 8px 0;">7</p>
+        <h3>Development of a compact ansatz via operator commutativity screening: Digital quantum simulation of molecular systems</h3>
+        <p class="meta" style="margin: 6px 0 4px 0;">
+          Dibyendu Mondal, Dipanjali Halder, <strong>Sonaldeep Halder</strong>, Rahul Maitra
+        </p>
+        <p class="meta" style="color: var(--accent); font-weight:500; margin-bottom:4px;">
+          The Journal of Chemical Physics, 2023, 159, 014105
+        </p>
+        <div class="buttons" style="margin-top:12px; margin-bottom:0;">
+          <a href="https://doi.org/10.1063/5.0153182" class="btn" target="_blank" rel="noopener">DOI</a>
+        </div>
+        <details>
+          <summary>Show Abstract</summary>
+          <p>This research presents a method for creating efficient quantum circuits within the unitary coupled cluster framework. The authors developed COMPASS, a dynamic protocol utilizing one- and two-body cluster operators plus rank-two scatterers to construct tailored quantum algorithms. The approach enables parallel processing across multiple quantum processors through energy sorting and operator commutativity prescreening. Key achievements include substantially reduced circuit depth for simulating molecular strong correlation while maintaining accuracy and robustness in noisy near-term quantum hardware environments.</p>
+        </details>
+      </div>
+
+      <div class="card">
+        <p class="meta" style="font-size:0.8rem; color:#999; margin:0 0 8px 0;">8</p>
+        <h3>Corrections beyond coupled cluster singles and doubles through selected generalized rank-two operators: digital quantum simulation of strongly correlated systems</h3>
+        <p class="meta" style="margin: 6px 0 4px 0;">
+          Dipanjali Halder, <strong>Sonaldeep Halder</strong>, Dibyendu Mondal, Chayan Patra, Anish Chakraborty, Rahul Maitra
+        </p>
+        <p class="equal-contrib">Dipanjali Halder and Sonaldeep Halder contributed equally to this work.</p>
+        <p class="meta" style="color: var(--accent); font-weight:500; margin-bottom:4px;">
+          Journal of Chemical Sciences, 2023, 135, Article 41
+        </p>
+        <div class="buttons" style="margin-top:12px; margin-bottom:0;">
+          <a href="https://doi.org/10.1007/s12039-023-02161-6" class="btn" target="_blank" rel="noopener">DOI</a>
+        </div>
+        <details>
+          <summary>Show Abstract</summary>
+          <p>The hybrid quantum-classical variational quantum eigensolver (VQE) with the unitary coupled cluster (UCC) ansatz has been the method of choice for the digital quantum simulation of molecular energetics in near-term noisy quantum devices. The most commonly used UCC ansatz with single and double excitations (UCCSD) fails to achieve chemical accuracy when molecular strong correlation comes into picture. This work shows that the UCCSD ansatz, complemented with a selected class of generalized excitation operators taken in a partially factorized (disentangled) form, can encapsulate arbitrarily high-rank correlation, with significant improvement in accuracy over UCCSD without any increase in implementation cost.</p>
+        </details>
+      </div>
+
+      <div class="card">
+        <p class="meta" style="font-size:0.8rem; color:#999; margin:0 0 8px 0;">9</p>
+        <h3>A synergistic approach towards optimization of coupled cluster amplitudes by exploiting dynamical hierarchy</h3>
+        <p class="meta" style="margin: 6px 0 4px 0;">
+          Chayan Patra, Valay Agarawal, Dipanjali Halder, Anish Chakraborty, Dibyendu Mondal, <strong>Sonaldeep Halder</strong>, Rahul Maitra
+        </p>
+        <p class="meta" style="color: var(--accent); font-weight:500; margin-bottom:4px;">
+          ChemPhysChem, 2023 (online October 31, 2022)
+        </p>
+        <div class="buttons" style="margin-top:12px; margin-bottom:0;">
+          <a href="https://doi.org/10.1002/cphc.202200633" class="btn" target="_blank" rel="noopener">DOI</a>
+        </div>
+        <details>
+          <summary>Show Abstract</summary>
+          <p>The paper analyzes coupled cluster iteration dynamics as a synergistic motion of coexisting slow and fast relaxing modes, manifesting a dynamical hierarchical structure. The authors identify highly damped auxiliary amplitudes whose time variation can be neglected compared to principal amplitudes, and establish an adiabatic approximation where each auxiliary amplitude is expressed as a unique parametric function of collective principal amplitudes. This leads to a significant reduction in the number of independent parameters and memory requirement in coupled cluster optimization.</p>
+        </details>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== PREPRINTS ===== -->
+  <section class="content-section reveal">
+    <h2 class="sticky-title">Preprints &amp; Under Review</h2>
+    <div class="centered-container">
+
+      <div class="card preprint-card">
+        <span class="badge badge-preprint">Preprint</span>
+        <h3>Physics-informed generative machine learning for accelerated quantum-centric supercomputing</h3>
+        <p class="meta" style="margin: 6px 0 4px 0;">
+          Chayan Patra, Dibyendu Mondal, <strong>Sonaldeep Halder</strong>, Dipanjali Halder, Mostafizur Rahaman Laskar, Richa Goel, Rahul Maitra
+        </p>
+        <p class="meta" style="color: #856404; font-weight:500; margin-bottom:4px;">
+          arXiv:2512.06858 (December 2025, revised January 2026)
+        </p>
+        <p style="font-size:0.85rem; color:#666; margin-top:6px;">Experiments on IBM Heron R2 and R3 quantum processors, up to 52 qubits.</p>
+        <div class="buttons" style="margin-top:12px; margin-bottom:0;">
+          <a href="https://arxiv.org/abs/2512.06858" class="btn" target="_blank" rel="noopener">arXiv</a>
+        </div>
+      </div>
+
+      <div class="card preprint-card">
+        <span class="badge badge-preprint">Preprint</span>
+        <h3>Fragment, entangle, and consolidate: Strong correlation through bi-fold quantum circuits</h3>
+        <p class="meta" style="margin: 6px 0 4px 0;">
+          Arpan Choudhury, <strong>Sonaldeep Halder</strong>, Rahul Maitra, Debashree Ghosh
+        </p>
+        <p class="meta" style="color: #856404; font-weight:500; margin-bottom:4px;">
+          arXiv:2510.15678 (October 2025)
+        </p>
+        <div class="buttons" style="margin-top:12px; margin-bottom:0;">
+          <a href="https://arxiv.org/abs/2510.15678" class="btn" target="_blank" rel="noopener">arXiv</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="content-section dark-bg reveal">
+    <h2 class="sticky-title">Stay Updated</h2>
+    <div class="centered-container">
+      <p>For the most current list of publications, visit my Google Scholar or ORCID profile.</p>
+      <div class="buttons">
+        <a href="https://scholar.google.com/citations?user=0h1FrCQAAAAJ&hl=en" class="btn" target="_blank" rel="noopener">Google Scholar</a>
+        <a href="https://orcid.org/0000-0001-6548-2512" class="btn secondary" target="_blank" rel="noopener">ORCID</a>
+      </div>
+      <div class="copyright">
+        <p>&copy; 2025 Sonaldeep Halder. All rights reserved.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="js/shared.js"></script>
+</body>
+</html>

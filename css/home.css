@@ -1,0 +1,80 @@
+/* --- HERO SECTION (Home only) --- */
+.hero-section {
+    padding-top: var(--header-height);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-bottom: 80px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Subtle radial glow — sits behind the hero text */
+.hero-section::before {
+    content: '';
+    position: absolute;
+    width: 700px;
+    height: 500px;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(
+        ellipse at center,
+        rgba(37, 99, 235, 0.10) 0%,
+        rgba(124, 58, 237, 0.05) 40%,
+        transparent 70%
+    );
+    filter: blur(40px);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.hero-spacer { height: 480px; width: 1px; }
+
+.hero-subtext {
+    font-size: var(--text-lg);
+    color: var(--text-secondary);
+    max-width: 580px;
+    margin-top: var(--space-6);
+    margin-bottom: var(--space-10);
+    line-height: 1.7;
+}
+
+/* --- STICKY HERO TITLE --- */
+.sticky-hero {
+    position: sticky;
+    top: var(--header-height);
+    width: 100%;
+    text-align: center;
+    padding: 24px 20px;
+    margin: 0 0 var(--space-8) 0;
+    z-index: 500;
+
+    /* Pre-promote to GPU layer; non-zero blur keeps it alive so no layer
+       creation fires at dock time — that's what was causing the jump */
+    will-change: transform;
+    backdrop-filter: blur(0.5px);
+    -webkit-backdrop-filter: blur(0.5px);
+
+    background-color: transparent;
+    border-bottom: 1px solid transparent;
+
+    /* Static gradient — stays bluish at the end, never snaps to black */
+    background-image: linear-gradient(135deg, var(--text) 40%, var(--accent) 100%);
+    background-size: 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+
+    font-size: clamp(1.9rem, 1.4rem + 2.5vw, 3.25rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+}
+
+@media (max-width: 768px) {
+    .hero-spacer { height: 350px; }
+    .sticky-hero { font-size: 1.75rem; padding: 16px 16px; letter-spacing: -0.02em; }
+    .hero-subtext { font-size: var(--text-base); padding: 0 var(--space-4); }
+}
