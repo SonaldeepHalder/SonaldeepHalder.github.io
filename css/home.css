@@ -38,7 +38,8 @@
     max-width: 580px;
     margin-top: var(--space-6);
     margin-bottom: var(--space-10);
-    line-height: 1.7;
+    line-height: 1.75;
+    letter-spacing: -0.01em;
 }
 
 /* --- STICKY HERO TITLE --- */
@@ -74,7 +75,21 @@
 }
 
 @media (max-width: 768px) {
+    .hero-section { padding-bottom: 48px; }
+    .hero-section::before {
+        width: 100%;
+        height: 300px;
+        filter: blur(30px);
+    }
     .hero-spacer { height: 350px; }
-    .sticky-hero { font-size: 1.75rem; padding: 16px 16px; letter-spacing: -0.02em; }
-    .hero-subtext { font-size: var(--text-base); padding: 0 var(--space-4); }
+    .sticky-hero {
+        font-size: 1.75rem;
+        line-height: 1.2;
+        padding: 16px 16px;
+        letter-spacing: -0.02em;
+        box-sizing: border-box;
+        width: 100%;
+        max-width: 100vw;
+    }
+    .hero-subtext { font-size: var(--text-base); line-height: 1.7; padding: 0 var(--space-4); }
 }

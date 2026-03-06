@@ -5,6 +5,56 @@ document.addEventListener('DOMContentLoaded', () => {
     const header = document.querySelector('.fixed-header');
     const navLinks = document.querySelector('.nav-links');
     const stickyHeadings = document.querySelectorAll('.sticky-title, .sticky-hero');
+    const hamburgerBtn = document.getElementById('hamburger-btn');
+
+    // --- HAMBURGER MENU TOGGLE (all pages, mobile only) ---
+    if (hamburgerBtn) {
+        hamburgerBtn.addEventListener('click', () => {
+            const isOpen = hamburgerBtn.getAttribute('aria-expanded') === 'true';
+            const willOpen = !isOpen;
+            hamburgerBtn.setAttribute('aria-expanded', String(willOpen));
+            hamburgerBtn.setAttribute('aria-label', willOpen ? 'Close navigation' : 'Open navigation');
+            navLinks.classList.toggle('is-open', willOpen);
+            document.body.classList.toggle('nav-open', willOpen);
+
+            if (willOpen) {
+                // Move focus to first nav link for keyboard/screen reader users
+                const firstLink = navLinks.querySelector('a');
+                if (firstLink) requestAnimationFrame(() => firstLink.focus());
+            }
+        });
+
+        // Close nav when a nav link is clicked
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburgerBtn.setAttribute('aria-expanded', 'false');
+                hamburgerBtn.setAttribute('aria-label', 'Open navigation');
+                navLinks.classList.remove('is-open');
+                document.body.classList.remove('nav-open');
+            });
+        });
+
+        // Close nav when clicking outside the header area
+        document.addEventListener('click', (e) => {
+            if (!hamburgerBtn.contains(e.target) && !navLinks.contains(e.target)) {
+                hamburgerBtn.setAttribute('aria-expanded', 'false');
+                hamburgerBtn.setAttribute('aria-label', 'Open navigation');
+                navLinks.classList.remove('is-open');
+                document.body.classList.remove('nav-open');
+            }
+        });
+
+        // Escape key closes menu and returns focus to the hamburger button
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && hamburgerBtn.getAttribute('aria-expanded') === 'true') {
+                hamburgerBtn.setAttribute('aria-expanded', 'false');
+                hamburgerBtn.setAttribute('aria-label', 'Open navigation');
+                navLinks.classList.remove('is-open');
+                document.body.classList.remove('nav-open');
+                hamburgerBtn.focus();
+            }
+        });
+    }
 
     // --- STICKY SLAB GRADIENT LOGIC (all pages) ---
     const updateStickyHeaders = () => {
@@ -46,6 +96,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const startPhotoY = isMobile ? 140 : 220;
         let startPhotoX = 0;
 
+        // On mobile, show identity text immediately (hamburger is always visible)
+        if (isMobile) {
+            identityText.classList.add('visible');
+        }
+
         const recalculatePositions = () => {
             photoWrapper.style.transform = '';
             photoWrapper.style.width = `${endSize}px`;
@@ -70,13 +125,22 @@ document.addEventListener('DOMContentLoaded', () => {
             header.style.borderBottom = `1px solid rgba(0, 0, 0, ${progress * 0.05})`;
             header.style.backdropFilter = `blur(${progress * 12}px)`;
             header.style.webkitBackdropFilter = `blur(${progress * 12}px)`;
-            navLinks.style.opacity = progress;
-            navLinks.style.pointerEvents = progress > 0.5 ? 'auto' : 'none';
-            if (progress > 0.8) {
-                identityText.classList.add('visible');
-            } else {
-                identityText.classList.remove('visible');
+
+            // Nav opacity: only animate on desktop; mobile uses hamburger
+            if (!isMobile) {
+                navLinks.style.opacity = progress;
+                navLinks.style.pointerEvents = progress > 0.5 ? 'auto' : 'none';
             }
+
+            // Identity text: animate on desktop; already shown on mobile above
+            if (!isMobile) {
+                if (progress > 0.8) {
+                    identityText.classList.add('visible');
+                } else {
+                    identityText.classList.remove('visible');
+                }
+            }
+
             updateStickyHeaders();
         };
 
@@ -92,12 +156,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     } else {
         // === INNER PAGES: show header fully immediately, no photo animation ===
+        const isMobile = window.innerWidth < 768;
         header.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
         header.style.borderBottom = '1px solid rgba(0, 0, 0, 0.08)';
         header.style.backdropFilter = 'blur(12px)';
         header.style.webkitBackdropFilter = 'blur(12px)';
-        navLinks.style.opacity = '1';
-        navLinks.style.pointerEvents = 'auto';
+
+        // Only set nav opacity via JS on desktop; mobile hamburger controls it
+        if (!isMobile) {
+            navLinks.style.opacity = '1';
+            navLinks.style.pointerEvents = 'auto';
+        }
+
         identityText.classList.add('visible');
         window.addEventListener('scroll', updateStickyHeaders);
     }
@@ -127,9 +197,12 @@ function initBokeh() {
     const ctx = canvas.getContext('2d');
     let width, height;
     let circles = [];
+    let lastFrameTime = 0;
 
     const isMobile = window.innerWidth < 768;
     const circleCount = isMobile ? 8 : 15;
+    // On mobile cap at ~30fps to conserve battery; 0 means uncapped on desktop
+    const frameInterval = isMobile ? 1000 / 30 : 0;
 
     const colors = [
         'rgba(45, 140, 255, 0.3)',
@@ -181,7 +254,16 @@ function initBokeh() {
         }
     }
 
-    function animate() {
+    function animate(timestamp) {
+        requestAnimationFrame(animate);
+
+        // Skip drawing when tab is hidden — saves battery
+        if (document.hidden) return;
+
+        // On mobile, skip frames to maintain ~30fps cap
+        if (frameInterval > 0 && timestamp - lastFrameTime < frameInterval) return;
+        lastFrameTime = timestamp;
+
         ctx.clearRect(0, 0, width, height);
         ctx.globalCompositeOperation = 'multiply';
         circles.forEach(circle => {
@@ -189,10 +271,9 @@ function initBokeh() {
             circle.draw();
         });
         ctx.globalCompositeOperation = 'source-over';
-        requestAnimationFrame(animate);
     }
 
     window.addEventListener('resize', resize);
     resize();
-    animate();
+    requestAnimationFrame(animate);
 }

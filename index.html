@@ -2,13 +2,35 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="PhD researcher at IIT Bombay building resource-efficient quantum algorithms for molecular simulation using Generative AI and NISQ hardware.">
+  <meta name="author" content="Sonaldeep Halder">
+
+  <!-- Open Graph / Social sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Sonaldeep Halder">
+  <meta property="og:title" content="Sonaldeep Halder | Research Scholar">
+  <meta property="og:description" content="PhD researcher at IIT Bombay building resource-efficient quantum algorithms for molecular simulation using Generative AI and NISQ hardware.">
+  <meta property="og:url" content="https://sonaldeephalder.github.io/">
+  <meta property="og:image" content="https://sonaldeephalder.github.io/assets/photoForWebsiteCropped.jpg">
+  <meta property="og:image:alt" content="Sonaldeep Halder">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Sonaldeep Halder | Research Scholar">
+  <meta name="twitter:description" content="PhD researcher at IIT Bombay building resource-efficient quantum algorithms for molecular simulation using Generative AI and NISQ hardware.">
+  <meta name="twitter:image" content="https://sonaldeephalder.github.io/assets/photoForWebsiteCropped.jpg">
+
+  <link rel="canonical" href="https://sonaldeephalder.github.io/">
   <title>Sonaldeep Halder | Research Scholar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="css/shared.css">
   <link rel="stylesheet" href="css/home.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
 
 <canvas id="bokeh-canvas"></canvas>
 
@@ -16,7 +38,7 @@
   <div class="header-inner">
     <div class="identity-group">
       <div id="photo-wrapper" class="photo-wrapper">
-        <img src="assets/photoForWebsiteCropped.jpg" alt="Profile" class="profile-img">
+        <img src="assets/photoForWebsiteCropped.jpg" alt="Sonaldeep Halder" class="profile-img" width="300" height="300" fetchpriority="high">
       </div>
 
       <div class="text-identity" id="identity-text">
@@ -26,13 +48,18 @@
       </div>
     </div>
 
-    <nav class="nav-links">
+    <nav class="nav-links" aria-label="Main navigation">
       <a href="index.html">Home</a>
       <a href="research.html">Research</a>
       <a href="publications.html">Publications</a>
       <a href="cv.html">CV</a>
       <a href="contact.html">Contact</a>
     </nav>
+    <button class="hamburger" id="hamburger-btn" aria-label="Open navigation" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </div>
 </header>
 
@@ -47,7 +74,7 @@
   </div>
 </section>
 
-<main class="content-area">
+<main class="content-area" id="main-content">
 
   <section id="papers" class="content-section reveal">
     <h2 class="sticky-title">Selected Publications</h2>

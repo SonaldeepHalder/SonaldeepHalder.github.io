@@ -81,6 +81,33 @@ body {
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
 }
+
+/* --- SKIP TO CONTENT (keyboard accessibility) --- */
+.skip-link {
+    position: fixed;
+    top: -100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent);
+    color: #ffffff;
+    padding: 12px 28px;
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+    font-family: 'Inter', sans-serif;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    z-index: 99999;
+    box-shadow: var(--shadow-md);
+    transition: top var(--dur-fast) var(--ease-out);
+    white-space: nowrap;
+}
+.skip-link:focus {
+    top: 0;
+    outline: 3px solid #ffffff;
+    outline-offset: 3px;
+}
+
 html { scroll-behavior: smooth; }
 
 h1, h2, h3, h4 {
@@ -90,8 +117,8 @@ h1, h2, h3, h4 {
     line-height: 1.2;
     margin: 0;
 }
-h2 { font-size: var(--text-2xl); font-weight: 700; }
-h3 { font-size: var(--text-lg);  font-weight: 600; }
+h2 { font-size: var(--text-2xl); font-weight: 700; line-height: 1.25; }
+h3 { font-size: var(--text-xl);  font-weight: 600; }
 p  { line-height: 1.7; }
 
 /* --- BACKGROUND CANVAS --- */
@@ -126,7 +153,10 @@ p  { line-height: 1.7; }
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 40px;
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: max(40px, env(safe-area-inset-left, 0px) + 20px);
+    padding-right: max(40px, env(safe-area-inset-right, 0px) + 20px);
 }
 
 .identity-group { display: flex; align-items: center; height: 100%; }
@@ -151,6 +181,13 @@ p  { line-height: 1.7; }
 }
 .text-identity.visible { opacity: 1; transform: translateX(0); }
 
+.name {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text);
+}
+
 .nav-links { display: flex; gap: var(--space-6); opacity: 0; will-change: opacity; }
 .nav-links a {
     text-decoration: none;
@@ -171,8 +208,6 @@ p  { line-height: 1.7; }
     transform: scaleX(0);
     transition: transform var(--dur-normal) var(--ease-out);
 }
-.nav-links a:hover { color: var(--text); }
-.nav-links a:hover::after { transform: scaleX(0.6); }
 .nav-links a.active { color: var(--accent); font-weight: 600; }
 .nav-links a.active::after { transform: scaleX(1); }
 
@@ -267,13 +302,10 @@ p  { line-height: 1.7; }
         border-color var(--dur-normal) ease;
     will-change: transform;
 }
-.card:hover, .item:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-hover);
-    border-color: var(--border-strong);
-    background: var(--bg-elevated);
+.card p + p,
+.item p + p {
+    margin-top: var(--space-3);
 }
-
 .dark-bg {
     background-color: #0a0a0b;
     color: white;
@@ -295,7 +327,7 @@ p  { line-height: 1.7; }
 
 .buttons { margin-top: var(--space-6); margin-bottom: 0; display: flex; gap: var(--space-3); flex-wrap: wrap; }
 .btn {
-    padding: 11px 26px;
+    padding: 13px 26px;
     background: var(--accent);
     color: white;
     text-decoration: none;
@@ -312,20 +344,11 @@ p  { line-height: 1.7; }
         transform var(--dur-normal) var(--ease-out),
         box-shadow var(--dur-normal) ease;
 }
-.btn:hover {
-    background: var(--accent-hover);
-    transform: translateY(-1px);
-    box-shadow: 0 2px 6px rgba(37,99,235,0.3), 0 8px 20px rgba(37,99,235,0.2);
-}
 .btn:active { transform: translateY(0); transition-duration: 80ms; }
 .btn.secondary {
     background: transparent;
     color: var(--accent);
     border: 1.5px solid var(--accent);
-    box-shadow: none;
-}
-.btn.secondary:hover {
-    background: var(--accent-subtle);
     box-shadow: none;
 }
 
@@ -345,14 +368,13 @@ details summary {
     gap: var(--space-2);
     transition: opacity var(--dur-fast) ease;
 }
-details summary:hover { opacity: 0.75; }
 details summary::-webkit-details-marker { display: none; }
 details[open] summary { margin-bottom: var(--space-3); }
 details[open] summary::before { content: '▲ '; font-size: 0.7em; }
 details:not([open]) summary::before { content: '▼ '; font-size: 0.7em; }
 details p {
     font-size: var(--text-sm);
-    line-height: 1.75;
+    line-height: 1.8;
     color: var(--text-secondary);
     margin: 0;
 }
@@ -385,7 +407,7 @@ details p {
 .meta {
     font-size: var(--text-sm);
     color: var(--text-muted);
-    line-height: 1.5;
+    line-height: 1.6;
 }
 .meta.accent { color: var(--accent); font-weight: 500; }
 
@@ -410,31 +432,183 @@ details p {
     }
 }
 
+/* --- HOVER EFFECTS (pointer devices only — prevents sticky hover on touch screens) --- */
+@media (hover: hover) {
+    .card:hover, .item:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-hover);
+        border-color: var(--border-strong);
+        background: var(--bg-elevated);
+    }
+
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a:hover::after { transform: scaleX(0.6); }
+
+    .btn:hover {
+        background: var(--accent-hover);
+        transform: translateY(-1px);
+        box-shadow: 0 2px 6px rgba(37,99,235,0.3), 0 8px 20px rgba(37,99,235,0.2);
+    }
+
+    .btn.secondary:hover {
+        background: var(--accent-subtle);
+        box-shadow: none;
+    }
+
+    details summary:hover { opacity: 0.75; }
+}
+
+/* --- SCROLL LOCK (applied when mobile menu is open) --- */
+body.nav-open { overflow: hidden; }
+
+/* --- HAMBURGER BUTTON (mobile only) --- */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 44px;
+    height: 44px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 12px 8px;
+    z-index: 1100;
+    flex-shrink: 0;
+    box-sizing: border-box;
+}
+.hamburger span {
+    display: block;
+    height: 2px;
+    width: 100%;
+    background: var(--text);
+    border-radius: 2px;
+    transition: transform var(--dur-normal) var(--ease-std),
+                opacity var(--dur-normal) ease;
+}
+.hamburger[aria-expanded="true"] span:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+}
+.hamburger[aria-expanded="true"] span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+}
+.hamburger[aria-expanded="true"] span:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg);
+}
+
 /* -------------------------------------- */
 /* --- MOBILE RESPONSIVENESS TWEAKS --- */
 /* -------------------------------------- */
 @media (max-width: 768px) {
-    /* 1. Header Layout */
-    .header-inner { padding: 0 20px; }
+    /* 1. Header Layout — safe area aware */
+    .header-inner {
+        padding-top: 0;
+        padding-bottom: 0;
+        padding-left: max(20px, env(safe-area-inset-left, 0px) + 16px);
+        padding-right: max(20px, env(safe-area-inset-right, 0px) + 16px);
+    }
 
-    /* 2. Hide specific elements to save space */
+    /* 2. Hide role/separator to save header space */
     .role, .separator { display: none; }
 
-    /* 3. Navigation Links (Horizontal Scroll) */
-    .nav-links {
-        gap: 15px;
-        overflow-x: auto;
-        padding-bottom: 5px;
-        max-width: 160px;
+    /* 3. Protect name from overflowing on small screens */
+    .name {
+        overflow: hidden;
+        text-overflow: ellipsis;
         white-space: nowrap;
-        -webkit-overflow-scrolling: touch;
+        max-width: 42vw;
     }
-    .nav-links::-webkit-scrollbar { display: none; }
-    .nav-links a { font-size: var(--text-xs); }
 
-    /* 4. Content Adjustments */
+    /* 4. Show hamburger button */
+    .hamburger { display: flex; }
+
+    /* 5. Mobile nav — full-width dropdown below header */
+    .nav-links {
+        position: fixed;
+        top: var(--header-height);
+        left: 0;
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--space-2);
+        padding: var(--space-4) 0 var(--space-8);
+        padding-left: env(safe-area-inset-left, 0px);
+        padding-right: env(safe-area-inset-right, 0px);
+        background: rgba(250, 250, 250, 0.97);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        border-bottom: 1px solid var(--border-strong);
+        box-shadow: var(--shadow-md);
+        z-index: 999;
+
+        /* Hidden by default */
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-8px);
+        transition: opacity var(--dur-normal) var(--ease-std),
+                    transform var(--dur-normal) var(--ease-std);
+
+        /* Reset desktop overrides */
+        max-width: 100%;
+        overflow-x: visible;
+        white-space: normal;
+    }
+
+    .nav-links.is-open {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+    }
+
+    /* 6. Nav link touch targets — min 44px height */
+    .nav-links a {
+        font-size: var(--text-base);
+        padding: var(--space-4) var(--space-8);
+        width: 100%;
+        text-align: center;
+        box-sizing: border-box;
+        border-radius: 0;
+    }
+
+    /* Active nav link gets a subtle highlight pill in the dropdown */
+    .nav-links a.active {
+        background-color: var(--accent-subtle);
+        border-radius: var(--radius-md);
+        margin: 0 var(--space-6);
+        width: calc(100% - var(--space-12));
+        box-sizing: border-box;
+    }
+
+    /* Hide underline animation in mobile dropdown */
+    .nav-links a::after { display: none; }
+
+    /* 7. Section spacing — reduce excessive 80px bottom padding */
+    .content-section { padding-bottom: 48px; }
+
+    /* 8. Dark footer — add bottom safe area for home indicator */
+    .dark-bg {
+        padding-bottom: max(var(--space-12), calc(var(--space-8) + env(safe-area-inset-bottom, 0px)));
+    }
+
+    /* 9. Card and item padding */
     .card, .item { padding: var(--space-6); }
-    .centered-container { padding: 0 15px; }
 
-    h3 { font-size: var(--text-base); }
+    /* 10. Centered container horizontal padding */
+    .centered-container { padding: 0 16px; }
+
+    /* 11. Heading sizes */
+    h3 { font-size: var(--text-lg); }
+
+    /* 12. Sticky section titles — tighter spacing */
+    .sticky-title {
+        padding: 14px 0;
+        margin-bottom: 24px;
+    }
+
+    /* 13. Abstract toggle — larger touch area */
+    details summary {
+        min-height: 44px;
+        align-items: center;
+        padding: var(--space-2) 0;
+    }
 }

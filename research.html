@@ -2,13 +2,35 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Sonaldeep Halder's research on quantum algorithms, generative AI for ansatz construction, and resource-efficient molecular simulation on NISQ hardware at IIT Bombay.">
+  <meta name="author" content="Sonaldeep Halder">
+
+  <!-- Open Graph / Social sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Sonaldeep Halder">
+  <meta property="og:title" content="Research | Sonaldeep Halder">
+  <meta property="og:description" content="Sonaldeep Halder's research on quantum algorithms, generative AI for ansatz construction, and resource-efficient molecular simulation on NISQ hardware at IIT Bombay.">
+  <meta property="og:url" content="https://sonaldeephalder.github.io/research.html">
+  <meta property="og:image" content="https://sonaldeephalder.github.io/assets/photoForWebsiteCropped.jpg">
+  <meta property="og:image:alt" content="Sonaldeep Halder">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Research | Sonaldeep Halder">
+  <meta name="twitter:description" content="Sonaldeep Halder's research on quantum algorithms, generative AI for ansatz construction, and resource-efficient molecular simulation on NISQ hardware at IIT Bombay.">
+  <meta name="twitter:image" content="https://sonaldeephalder.github.io/assets/photoForWebsiteCropped.jpg">
+
+  <link rel="canonical" href="https://sonaldeephalder.github.io/research.html">
   <title>Research | Sonaldeep Halder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="css/shared.css">
   <link rel="stylesheet" href="css/pages.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
 
 <canvas id="bokeh-canvas"></canvas>
 
@@ -16,7 +38,7 @@
   <div class="header-inner">
     <div class="identity-group">
       <div class="photo-wrapper-static">
-        <img src="assets/photoForWebsiteCropped.jpg" alt="Profile" class="profile-img">
+        <img src="assets/photoForWebsiteCropped.jpg" alt="Sonaldeep Halder" class="profile-img" width="50" height="50">
       </div>
       <div class="text-identity" id="identity-text">
         <span class="name">Sonaldeep Halder</span>
@@ -25,13 +47,18 @@
       </div>
     </div>
 
-    <nav class="nav-links">
+    <nav class="nav-links" aria-label="Main navigation">
       <a href="index.html">Home</a>
       <a href="research.html">Research</a>
       <a href="publications.html">Publications</a>
       <a href="cv.html">CV</a>
       <a href="contact.html">Contact</a>
     </nav>
+    <button class="hamburger" id="hamburger-btn" aria-label="Open navigation" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </div>
 </header>
 
@@ -42,15 +69,15 @@
   </div>
 </section>
 
-<main class="content-area">
+<main class="content-area" id="main-content">
 
   <section class="content-section reveal">
     <h2 class="sticky-title">Research Overview</h2>
     <div class="centered-container">
-      <p style="text-align:left; line-height:1.8; font-size:1.05rem;">
+      <p style="text-align:left; line-height:1.7;">
         My research sits at the intersection of quantum computing and quantum chemistry, with a focus on making molecular simulation practical on near-term hardware. Working in the group of <strong>Prof. Rahul Maitra</strong> at IIT Bombay, I develop resource-efficient quantum algorithms for electronic structure. Pre-fault-tolerant quantum devices — known as NISQ machines — are limited by noise and short coherence times, which means the algorithms we run must be exceptionally resource-efficient.
       </p>
-      <p style="text-align:left; line-height:1.8; font-size:1.05rem; margin-top: 16px;">
+      <p style="text-align:left; line-height:1.7; margin-top: 16px;">
         To address this, I develop methods that leverage Generative AI and machine learning — particularly Restricted Boltzmann Machines (RBM) — to intelligently construct quantum circuits (ansatzes) that encode the electronic structure of molecules with minimal gate depth. I also work on the Projective Quantum Eigensolver (PQE) framework and dynamic adaptive ansatz construction strategies, incorporating many-body perturbation theory for operator screening. My work has accumulated 112 citations. The goal is to reduce quantum resource requirements without sacrificing accuracy — enabling meaningful quantum advantage on today's hardware.
       </p>
     </div>
