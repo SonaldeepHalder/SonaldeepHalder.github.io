@@ -205,10 +205,10 @@ function initBokeh() {
     const frameInterval = isMobile ? 1000 / 30 : 0;
 
     const colors = [
-        'rgba(45, 140, 255, 0.3)',
-        'rgba(180, 100, 255, 0.25)',
-        'rgba(100, 200, 200, 0.3)',
-        'rgba(255, 150, 150, 0.2)'
+        'rgba(37, 99, 235, 0.38)',    /* accent blue */
+        'rgba(124, 58, 237, 0.28)',   /* violet */
+        'rgba(16, 185, 129, 0.25)',   /* emerald */
+        'rgba(245, 158, 11, 0.18)'    /* amber */
     ];
 
     function resize() {
