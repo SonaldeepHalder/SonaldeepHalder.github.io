@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://formspree.io; frame-src 'none'; base-uri 'self'; form-action 'self' https://formspree.io; upgrade-insecure-requests;">
   <meta name="description" content="Contact Sonaldeep Halder, PhD researcher at IIT Bombay. Open to collaborations in quantum algorithms, quantum chemistry, and machine learning for scientific computing.">
   <meta name="author" content="Sonaldeep Halder">
 
@@ -28,236 +30,7 @@
   <link rel="stylesheet" href="css/shared.css">
   <link rel="stylesheet" href="css/pages.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    .contact-form {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      margin-top: 8px;
-    }
-    .contact-form input,
-    .contact-form textarea {
-      width: 100%;
-      padding: 14px 18px;
-      border: 1px solid var(--border-strong);
-      border-radius: 12px;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.95rem;
-      background: rgba(255,255,255,0.7);
-      backdrop-filter: blur(10px);
-      color: var(--text-main);
-      transition: border-color 0.2s;
-      box-sizing: border-box;
-    }
-    .contact-form input:focus,
-    .contact-form textarea:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
-    }
-    .contact-form textarea { min-height: 140px; resize: vertical; }
-    .contact-form button {
-      padding: 12px 30px;
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: 30px;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: opacity 0.2s;
-      align-self: flex-start;
-    }
-    .contact-form button:hover { opacity: 0.85; }
-
-    .social-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      width: 100%;
-      margin-top: 8px;
-    }
-    .social-link {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 18px 20px;
-      background: rgba(255,255,255,0.6);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,0.4);
-      border-radius: 14px;
-      text-decoration: none;
-      color: var(--text-main);
-      font-weight: 500;
-      font-size: 0.9rem;
-      transition: transform 0.2s, background 0.2s;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.05), 0 4px 12px rgba(0,0,0,0.04);
-    }
-    .social-link:hover {
-      transform: translateY(-2px);
-      background: var(--bg-elevated);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.06), 0 8px 16px rgba(0,0,0,0.07);
-      border-color: var(--border-strong);
-    }
-    .social-link .icon {
-      font-size: 1.4rem;
-      flex-shrink: 0;
-    }
-    @media (max-width: 500px) {
-      .social-grid { grid-template-columns: 1fr; }
-    }
-
-    /* --- FORM FOOTER (button + inline error) --- */
-    .form-footer {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    /* --- BUTTON LOADING STATE --- */
-    .contact-form button .btn-spinner {
-      display: none;
-      width: 16px;
-      height: 16px;
-      border: 2px solid rgba(255,255,255,0.4);
-      border-top-color: #ffffff;
-      border-radius: 50%;
-      animation: cf-spin 0.7s linear infinite;
-      flex-shrink: 0;
-    }
-    .contact-form button.is-loading .btn-label { display: none; }
-    .contact-form button.is-loading .btn-spinner { display: inline-block; }
-    .contact-form button.is-loading {
-      opacity: 0.8;
-      cursor: not-allowed;
-      pointer-events: none;
-      min-width: 140px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-    @keyframes cf-spin { to { transform: rotate(360deg); } }
-
-    /* --- INLINE ERROR --- */
-    .form-error {
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: #dc2626;
-      margin: 0;
-      line-height: 1.5;
-      flex: 1;
-      min-width: 0;
-      opacity: 0;
-      transform: translateY(4px);
-      transition: opacity 0.2s ease, transform 0.2s ease;
-    }
-    .form-error.visible { opacity: 1; transform: translateY(0); }
-
-    /* --- FORM EXIT ANIMATION --- */
-    .contact-form {
-      transition: opacity 0.35s cubic-bezier(0.16,1,0.3,1),
-                  transform 0.35s cubic-bezier(0.16,1,0.3,1);
-    }
-    .contact-form.is-exiting {
-      opacity: 0;
-      transform: translateY(-12px);
-      pointer-events: none;
-    }
-
-    /* --- SUCCESS CARD --- */
-    .success-card {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      padding: 48px 32px 40px;
-      background: rgba(255,255,255,0.72);
-      backdrop-filter: blur(20px) saturate(180%);
-      -webkit-backdrop-filter: blur(20px) saturate(180%);
-      border: 1px solid rgba(37,99,235,0.18);
-      border-radius: 16px;
-      box-shadow:
-        0 1px 2px rgba(0,0,0,0.04),
-        0 4px 12px rgba(37,99,235,0.08),
-        0 16px 40px rgba(37,99,235,0.06);
-      box-sizing: border-box;
-      opacity: 0;
-      transform: translateY(16px) scale(0.97);
-      transition:
-        opacity 0.45s cubic-bezier(0.16,1,0.3,1) 0.1s,
-        transform 0.45s cubic-bezier(0.16,1,0.3,1) 0.1s;
-    }
-    .success-card.is-visible { opacity: 1; transform: translateY(0) scale(1); }
-
-    /* --- ANIMATED CHECKMARK --- */
-    .success-icon-ring { width: 72px; height: 72px; margin-bottom: 24px; flex-shrink: 0; }
-    .success-checkmark { width: 72px; height: 72px; overflow: visible; }
-    .success-checkmark__circle {
-      stroke: var(--accent, #2563eb);
-      stroke-width: 2.5;
-      stroke-dasharray: 166;
-      stroke-dashoffset: 166;
-      stroke-linecap: round;
-      fill: none;
-      animation: cf-circle-draw 0.6s cubic-bezier(0.16,1,0.3,1) 0.2s forwards;
-    }
-    .success-checkmark__check {
-      stroke: var(--accent, #2563eb);
-      stroke-width: 3;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      stroke-dasharray: 48;
-      stroke-dashoffset: 48;
-      fill: none;
-      animation: cf-check-draw 0.4s cubic-bezier(0.16,1,0.3,1) 0.75s forwards;
-    }
-    @keyframes cf-circle-draw { to { stroke-dashoffset: 0; } }
-    @keyframes cf-check-draw  { to { stroke-dashoffset: 0; } }
-
-    .success-title {
-      font-size: 1.375rem;
-      font-weight: 700;
-      color: var(--text, #0a0a0b);
-      letter-spacing: -0.02em;
-      margin: 0 0 12px 0;
-    }
-    .success-body {
-      font-size: 0.95rem;
-      color: var(--text-muted, #71717a);
-      line-height: 1.65;
-      max-width: 380px;
-      margin: 0 0 28px 0;
-    }
-    .success-reset {
-      background: transparent;
-      border: 1.5px solid var(--accent, #2563eb);
-      color: var(--accent, #2563eb);
-      border-radius: 999px;
-      padding: 9px 22px;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.875rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.18s ease, transform 0.2s cubic-bezier(0.16,1,0.3,1);
-    }
-    .success-reset:hover { background: var(--accent-subtle, #dbeafe); transform: translateY(-1px); }
-    .success-reset:active { transform: translateY(0); transition-duration: 80ms; }
-
-    @media (prefers-reduced-motion: reduce) {
-      .contact-form, .success-card,
-      .success-checkmark__circle, .success-checkmark__check, .btn-spinner {
-        animation: none !important; transition: none !important;
-      }
-      .contact-form.is-exiting { display: none; }
-      .success-card { opacity: 1; transform: none; }
-      .success-checkmark__circle { stroke-dashoffset: 0; }
-      .success-checkmark__check  { stroke-dashoffset: 0; }
-    }
-  </style>
+  <link rel="stylesheet" href="css/contact.css">
 </head>
 <body>
 <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -316,7 +89,7 @@
     <div class="centered-container">
       <div class="social-grid">
 
-        <a href="https://scholar.google.com/citations?user=0h1FrCQAAAAJ&hl=en" class="social-link" target="_blank" rel="noopener">
+        <a href="https://scholar.google.com/citations?user=0h1FrCQAAAAJ&hl=en" class="social-link" target="_blank" rel="noopener noreferrer">
           <span class="icon">&#x1F4DA;</span>
           <div>
             <div>Google Scholar</div>
@@ -324,7 +97,7 @@
           </div>
         </a>
 
-        <a href="https://orcid.org/0000-0001-6548-2512" class="social-link" target="_blank" rel="noopener">
+        <a href="https://orcid.org/0000-0001-6548-2512" class="social-link" target="_blank" rel="noopener noreferrer">
           <span class="icon">&#x1F9EA;</span>
           <div>
             <div>ORCID</div>
@@ -332,7 +105,7 @@
           </div>
         </a>
 
-        <a href="https://www.researchgate.net/scientific-contributions/Sonaldeep-Halder-2229029853" class="social-link" target="_blank" rel="noopener">
+        <a href="https://www.researchgate.net/scientific-contributions/Sonaldeep-Halder-2229029853" class="social-link" target="_blank" rel="noopener noreferrer">
           <span class="icon">&#x1F4C8;</span>
           <div>
             <div>ResearchGate</div>
@@ -387,111 +160,6 @@
 </main>
 
 <script src="js/shared.js"></script>
-<script>
-(function () {
-  'use strict';
-  var FORMSPREE_URL = 'https://formspree.io/f/xjgabnqb';
-
-  var form        = document.getElementById('contact-form');
-  var submitBtn   = document.getElementById('form-submit-btn');
-  var errorEl     = document.getElementById('form-error');
-  var successCard = document.getElementById('success-card');
-  var resetBtn    = document.getElementById('success-reset-btn');
-
-  if (!form) return;
-
-  function setLoading(on) {
-    submitBtn.classList.toggle('is-loading', on);
-    submitBtn.disabled = on;
-  }
-
-  function showError(msg) {
-    errorEl.textContent = msg;
-    errorEl.classList.add('visible');
-  }
-
-  function clearError() {
-    errorEl.textContent = '';
-    errorEl.classList.remove('visible');
-  }
-
-  function resetCheckmarkAnimations() {
-    ['.success-checkmark__circle', '.success-checkmark__check'].forEach(function (sel) {
-      var el = successCard.querySelector(sel);
-      if (!el) return;
-      var clone = el.cloneNode(true);
-      el.parentNode.replaceChild(clone, el);
-    });
-  }
-
-  function showSuccess() {
-    form.classList.add('is-exiting');
-    setTimeout(function () {
-      form.style.display = 'none';
-      resetCheckmarkAnimations();
-      successCard.removeAttribute('hidden');
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () {
-          successCard.classList.add('is-visible');
-        });
-      });
-    }, 350);
-  }
-
-  function resetToForm() {
-    successCard.classList.remove('is-visible');
-    successCard.setAttribute('hidden', '');
-    form.classList.remove('is-exiting');
-    form.style.display = '';
-    form.reset();
-    clearError();
-    setLoading(false);
-  }
-
-  resetBtn.addEventListener('click', resetToForm);
-
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    clearError();
-
-    var name    = form.elements['name'].value.trim();
-    var email   = form.elements['email'].value.trim();
-    var message = form.elements['message'].value.trim();
-
-    if (!name || !email || !message) {
-      showError('Please fill in all fields before sending.');
-      return;
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      showError('Please enter a valid email address.');
-      return;
-    }
-
-    setLoading(true);
-
-    fetch(FORMSPREE_URL, {
-      method: 'POST',
-      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: name, email: email, message: message })
-    }).then(function (response) {
-      if (response.ok) {
-        showSuccess();
-      } else {
-        return response.json().then(function (data) {
-          var msg = 'Something went wrong. Please try again.';
-          if (data && data.errors && data.errors.length > 0) {
-            msg = data.errors.map(function (err) { return err.message; }).join(' ');
-          }
-          showError(msg);
-          setLoading(false);
-        });
-      }
-    }).catch(function () {
-      showError('Network error — please check your connection and try again.');
-      setLoading(false);
-    });
-  });
-}());
-</script>
+<script src="js/contact.js"></script>
 </body>
 </html>
