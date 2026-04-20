@@ -74,7 +74,15 @@
   font-size: 1.4rem;
   flex-shrink: 0;
 }
-@media (max-width: 500px) {
+/* Form field wrapper — label + input stacked */
+.form-field { display: flex; flex-direction: column; gap: 6px; }
+.form-field label {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 480px) {
   .social-grid { grid-template-columns: 1fr; }
 }
 

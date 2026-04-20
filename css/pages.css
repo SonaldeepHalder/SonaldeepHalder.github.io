@@ -42,3 +42,37 @@
     .page-title { font-size: var(--text-2xl); padding: 0 var(--space-4); box-sizing: border-box; }
     .hero-subtext { font-size: var(--text-base); line-height: 1.7; padding: 0 var(--space-4); }
 }
+
+/* ----- CV page: publication list ----- */
+.pub-list {
+    list-style: decimal;
+    padding-left: 20px;
+    margin: 0;
+    width: 100%;
+}
+.pub-list li {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    line-height: 1.7;
+}
+.pub-list li:last-child { border-bottom: none; }
+.pub-list a { color: var(--accent); }
+
+.pub-preprint-list {
+    list-style: disc;
+    padding-left: 20px;
+    margin: 0;
+    width: 100%;
+}
+.pub-preprint-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    line-height: 1.7;
+}
+.pub-preprint-list li:last-child { border-bottom: none; }
+.pub-preprint-list a { color: var(--accent); }
+
+.pub-section-label {
+    font-weight: 600;
+    margin: 0 0 var(--space-2) 0;
+}

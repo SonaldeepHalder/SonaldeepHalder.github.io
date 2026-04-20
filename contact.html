@@ -31,11 +31,30 @@
   <link rel="stylesheet" href="css/pages.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/contact.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Sonaldeep Halder",
+    "jobTitle": "PhD Research Scholar",
+    "affiliation": {
+      "@type": "Organization",
+      "name": "Indian Institute of Technology Bombay",
+      "url": "https://www.iitb.ac.in"
+    },
+    "url": "https://sonaldeephalder.github.io",
+    "sameAs": [
+      "https://scholar.google.com/citations?user=0h1FrCQAAAAJ&hl=en",
+      "https://orcid.org/0000-0001-6548-2512",
+      "https://www.researchgate.net/scientific-contributions/Sonaldeep-Halder-2229029853"
+    ]
+  }
+  </script>
 </head>
 <body>
 <a href="#main-content" class="skip-link">Skip to main content</a>
 
-<canvas id="bokeh-canvas"></canvas>
+<canvas id="bokeh-canvas" aria-hidden="true"></canvas>
 
 <header class="fixed-header">
   <div class="header-inner">
@@ -121,9 +140,18 @@
     <h2 class="sticky-title">Send a Message</h2>
     <div class="centered-container">
       <form id="contact-form" class="contact-form" novalidate>
-        <input type="text"  name="name"    placeholder="Your name"    required autocomplete="name">
-        <input type="email" name="email"   placeholder="Your email"   required autocomplete="email">
-        <textarea           name="message" placeholder="Your message" required></textarea>
+        <div class="form-field">
+          <label for="contact-name">Name</label>
+          <input id="contact-name" type="text" name="name" placeholder="Your name" required autocomplete="name">
+        </div>
+        <div class="form-field">
+          <label for="contact-email">Email</label>
+          <input id="contact-email" type="email" name="email" placeholder="Your email" required autocomplete="email">
+        </div>
+        <div class="form-field">
+          <label for="contact-message">Message</label>
+          <textarea id="contact-message" name="message" placeholder="Your message" required></textarea>
+        </div>
         <div class="form-footer">
           <button type="submit" id="form-submit-btn">
             <span class="btn-label">Send Message</span>
