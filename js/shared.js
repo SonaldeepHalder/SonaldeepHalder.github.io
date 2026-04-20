@@ -200,11 +200,17 @@ function initBokeh() {
     let lastFrameTime = 0;
 
     const isMobile = window.innerWidth < 768;
-    const circleCount = isMobile ? 8 : 15;
+    const circleCount = isMobile ? 12 : 15;
     // On mobile cap at ~30fps to conserve battery; 0 means uncapped on desktop
     const frameInterval = isMobile ? 1000 / 30 : 0;
 
-    const colors = [
+    // Mobile uses softer opacity so smaller circles don't overpower the clean background
+    const colors = isMobile ? [
+        'rgba(37, 99, 235, 0.22)',
+        'rgba(124, 58, 237, 0.16)',
+        'rgba(16, 185, 129, 0.13)',
+        'rgba(245, 158, 11, 0.10)'
+    ] : [
         'rgba(37, 99, 235, 0.38)',    /* accent blue */
         'rgba(124, 58, 237, 0.28)',   /* violet */
         'rgba(16, 185, 129, 0.25)',   /* emerald */
@@ -221,7 +227,10 @@ function initBokeh() {
         constructor() {
             this.x = Math.random() * width;
             this.y = Math.random() * height;
-            this.radius = Math.random() * 150 + 50;
+            // Smaller circles on mobile for a subtler, cleaner background effect
+            this.radius = isMobile
+                ? Math.random() * 55 + 20
+                : Math.random() * 150 + 50;
             this.color = colors[Math.floor(Math.random() * colors.length)];
             this.vx = (Math.random() - 0.5) * 0.2;
             this.vy = (Math.random() - 0.5) * 0.2;
@@ -239,7 +248,9 @@ function initBokeh() {
 
         draw() {
             const scrollY = window.scrollY;
-            const visibleY = this.y - (scrollY * this.scrollFactor);
+            // On mobile: disable scroll parallax — it causes circles to jump
+            // jarringly as users scroll. On desktop the subtle parallax adds depth.
+            const visibleY = isMobile ? this.y : this.y - (scrollY * this.scrollFactor);
             ctx.beginPath();
             ctx.arc(this.x, visibleY, this.radius, 0, Math.PI * 2);
             ctx.fillStyle = this.color;

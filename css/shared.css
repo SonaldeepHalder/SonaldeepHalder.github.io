@@ -508,11 +508,12 @@ body.nav-open { overflow: hidden; }
     transform: translateY(-9px) rotate(-45deg);
 }
 
-/* -------------------------------------- */
-/* --- MOBILE RESPONSIVENESS TWEAKS --- */
-/* -------------------------------------- */
+/* ============================================ */
+/* === MOBILE REDESIGN ≤ 768px               === */
+/* ============================================ */
 @media (max-width: 768px) {
-    /* 1. Header Layout — safe area aware */
+
+    /* 1. Header — safe-area aware */
     .header-inner {
         padding-top: 0;
         padding-bottom: 0;
@@ -520,47 +521,44 @@ body.nav-open { overflow: hidden; }
         padding-right: max(20px, env(safe-area-inset-right, 0px) + 16px);
     }
 
-    /* 2. Hide role/separator to save header space */
+    /* 2. Hide role & separator — preserve header width */
     .role, .separator { display: none; }
 
-    /* 3. Protect name from overflowing on small screens */
+    /* 3. Prevent name overflow on narrow screens */
     .name {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        max-width: 42vw;
+        max-width: 44vw;
+        font-size: var(--text-sm);
     }
 
-    /* 4. Show hamburger button */
+    /* 4. Show hamburger */
     .hamburger { display: flex; }
 
-    /* 5. Mobile nav — full-width dropdown below header */
+    /* 5. Mobile nav — polished full-width dropdown */
     .nav-links {
         position: fixed;
         top: var(--header-height);
         left: 0;
         width: 100%;
         flex-direction: column;
-        align-items: center;
-        gap: var(--space-2);
-        padding: var(--space-4) 0 var(--space-8);
-        padding-left: env(safe-area-inset-left, 0px);
-        padding-right: env(safe-area-inset-right, 0px);
-        background: rgba(250, 250, 250, 0.97);
-        backdrop-filter: blur(20px) saturate(180%);
-        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        align-items: stretch;
+        gap: 0;
+        padding: var(--space-3)
+                 max(var(--space-4), env(safe-area-inset-right, 0px) + var(--space-3))
+                 max(var(--space-6), env(safe-area-inset-bottom, 0px) + var(--space-4))
+                 max(var(--space-4), env(safe-area-inset-left, 0px) + var(--space-3));
+        background: rgba(250, 250, 250, 0.98);
+        backdrop-filter: blur(28px) saturate(200%);
+        -webkit-backdrop-filter: blur(28px) saturate(200%);
         border-bottom: 1px solid var(--border-strong);
-        box-shadow: var(--shadow-md);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.10), 0 2px 8px rgba(0, 0, 0, 0.06);
         z-index: 999;
-
-        /* Hidden by default */
         opacity: 0;
         pointer-events: none;
-        transform: translateY(-8px);
-        transition: opacity var(--dur-normal) var(--ease-std),
-                    transform var(--dur-normal) var(--ease-std);
-
-        /* Reset desktop overrides */
+        transform: translateY(-10px);
+        transition: opacity 180ms var(--ease-std), transform 180ms var(--ease-std);
         max-width: 100%;
         overflow-x: visible;
         white-space: normal;
@@ -572,56 +570,121 @@ body.nav-open { overflow: hidden; }
         transform: translateY(0);
     }
 
-    /* 6. Nav link touch targets — min 44px height */
+    /* 6. Nav links — generous 48px touch targets, pill highlight on active */
     .nav-links a {
         font-size: var(--text-base);
-        padding: var(--space-4) var(--space-8);
+        font-weight: 500;
+        padding: 14px var(--space-4);
         width: 100%;
         text-align: center;
         box-sizing: border-box;
-        border-radius: 0;
-    }
-
-    /* Active nav link gets a subtle highlight pill in the dropdown */
-    .nav-links a.active {
-        background-color: var(--accent-subtle);
         border-radius: var(--radius-md);
-        margin: 0 var(--space-6);
-        width: calc(100% - var(--space-12));
-        box-sizing: border-box;
+        color: var(--text-secondary);
+        margin-bottom: 2px;
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
-    /* Hide underline animation in mobile dropdown */
     .nav-links a::after { display: none; }
 
-    /* 7. Section spacing — reduce excessive 80px bottom padding */
-    .content-section { padding-bottom: 48px; }
+    .nav-links a.active {
+        background-color: var(--accent-subtle);
+        color: var(--accent);
+        font-weight: 600;
+        width: 100%;
+        margin: 0 0 2px 0;
+        border-radius: var(--radius-md);
+    }
 
-    /* 8. Dark footer — add bottom safe area for home indicator */
+    /* 7. Content sections */
+    .content-section { padding-bottom: 56px; }
+
+    /* 8. Dark footer — safe area for home indicator */
     .dark-bg {
         padding-bottom: max(var(--space-12), calc(var(--space-8) + env(safe-area-inset-bottom, 0px)));
     }
 
-    /* 9. Card and item padding */
-    .card, .item { padding: var(--space-6); }
-
-    /* 10. Centered container horizontal padding */
-    .centered-container { padding: 0 16px; }
-
-    /* 11. Heading sizes */
-    h3 { font-size: var(--text-lg); }
-
-    /* 12. Sticky section titles — tighter spacing */
-    .sticky-title {
-        padding: 14px 0;
-        margin-bottom: 24px;
+    /* 9. Cards — accent left border gives visual rhythm */
+    .card {
+        padding: var(--space-5);
+        border-left: 3px solid var(--accent);
+        border-radius: var(--radius-md);
+        margin-bottom: var(--space-4);
     }
 
-    /* 13. Abstract toggle — larger touch area */
+    /* 10. Items — refined padding */
+    .item {
+        padding: var(--space-5);
+        border-radius: var(--radius-md);
+        margin-bottom: var(--space-3);
+    }
+
+    /* 11. Container */
+    .centered-container { padding: 0 var(--space-4); }
+
+    /* 12. Heading hierarchy — tighter for mobile */
+    h2 { font-size: var(--text-xl); }
+    h3 { font-size: var(--text-base); font-weight: 600; }
+
+    /* 13. Sticky section titles */
+    .sticky-title {
+        padding: 12px var(--space-4);
+        margin-bottom: 20px;
+        font-size: var(--text-lg);
+    }
+
+    /* 14. Buttons — stack for easy tapping on primary CTA containers */
+    .buttons {
+        flex-direction: column;
+        gap: var(--space-3);
+        width: 100%;
+        margin-top: var(--space-5);
+    }
+    .buttons .btn,
+    .buttons .btn.secondary {
+        width: 100%;
+        justify-content: center;
+        box-sizing: border-box;
+        padding: 15px 28px;
+        text-align: center;
+    }
+
+    /* 15. List items — better line breathing */
+    .clean-list li {
+        font-size: var(--text-sm);
+        padding: var(--space-3) 0 var(--space-3) var(--space-7);
+        line-height: 1.65;
+    }
+    .clean-list li::before {
+        top: calc(var(--space-3) + 0.5em);
+        left: var(--space-3);
+        width: 6px;
+        height: 6px;
+    }
+
+    /* 16. Abstract toggle — larger touch target */
     details summary {
         min-height: 44px;
         align-items: center;
         padding: var(--space-2) 0;
     }
 
+}
+
+/* ============================================ */
+/* === SMALL PHONES ≤ 480px                  === */
+/* ============================================ */
+@media (max-width: 480px) {
+    .card  { padding: var(--space-4) var(--space-4); }
+    .item  { padding: var(--space-4) var(--space-4); }
+    h2     { font-size: var(--text-lg); }
+    .centered-container { padding: 0 var(--space-3); }
+    .sticky-title {
+        padding: 10px var(--space-3);
+        font-size: var(--text-base);
+    }
+    .buttons .btn,
+    .buttons .btn.secondary { padding: 13px 20px; }
 }
