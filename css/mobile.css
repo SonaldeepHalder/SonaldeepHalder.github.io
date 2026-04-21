@@ -38,8 +38,8 @@
     .header-inner {
         padding-top:    0;
         padding-bottom: 0;
-        padding-left:  max(18px, env(safe-area-inset-left,  0px) + 14px);
-        padding-right: max(18px, env(safe-area-inset-right, 0px) + 14px);
+        padding-left:  max(20px, env(safe-area-inset-left,  0px) + 16px);
+        padding-right: max(20px, env(safe-area-inset-right, 0px) + 16px);
     }
 
     /* Home page: hide photo-wrapper in header (photo lives in mobile-hero instead) */
@@ -335,7 +335,7 @@
     }
 
     /* ── CONTAINER ── */
-    .centered-container { padding: 0 18px; }
+    .centered-container { padding: 0 24px; }
 
     /* ── TYPOGRAPHY ── */
     h2 { font-size: var(--text-xl); }
@@ -343,7 +343,7 @@
 
     /* ── STICKY SECTION TITLES ── */
     .sticky-title {
-        padding:       12px 20px;
+        padding:       12px 24px;
         margin-bottom: 20px;
         font-size:     var(--text-lg);
     }
@@ -387,8 +387,8 @@
     /* ── INNER PAGE HERO ── */
     .page-hero {
         padding-top:    calc(var(--header-height) + 32px);
-        padding-left:   22px;
-        padding-right:  22px;
+        padding-left:   24px;
+        padding-right:  24px;
         padding-bottom: 30px;
     }
 
@@ -433,7 +433,7 @@
 @media (max-width: 480px) {
 
     .mobile-hero {
-        padding: calc(var(--header-height) + 28px) 18px 44px;
+        padding: calc(var(--header-height) + 28px) 20px 44px;
     }
 
     .mobile-hero-cta {
@@ -461,10 +461,10 @@
 
     h2 { font-size: var(--text-lg); }
 
-    .centered-container { padding: 0 16px; }
+    .centered-container { padding: 0 20px; }
 
     .sticky-title {
-        padding:   10px var(--space-3);
+        padding:   10px 20px;
         font-size: var(--text-base);
     }
 
