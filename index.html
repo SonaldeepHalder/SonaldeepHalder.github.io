@@ -29,6 +29,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="css/shared.css">
   <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/mobile.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script type="application/ld+json">
   {
@@ -91,6 +92,30 @@
     </button>
   </div>
 </header>
+
+<!-- MOBILE HERO — visible only on mobile (≤ 768px), replaces scroll animation -->
+<div class="mobile-hero" id="mobile-hero" aria-label="Profile introduction">
+  <div class="mobile-profile-photo">
+    <img src="assets/photoForWebsiteCropped.jpg" alt="Sonaldeep Halder" class="mobile-profile-img" width="110" height="110">
+  </div>
+  <div class="mobile-hero-content">
+    <h1 class="mobile-hero-name">Sonaldeep Halder</h1>
+    <p class="mobile-hero-role">PhD Research Scholar</p>
+    <p class="mobile-hero-affil">IIT Bombay &middot; Department of Chemistry</p>
+    <div class="mobile-divider"></div>
+    <p class="mobile-hero-desc">Designing resource-efficient quantum algorithms for molecular simulation using Generative AI and NISQ hardware.</p>
+    <div class="mobile-hero-tags">
+      <span class="tag">Quantum Computing</span>
+      <span class="tag">Generative AI</span>
+      <span class="tag">NISQ</span>
+      <span class="tag">Quantum Chemistry</span>
+    </div>
+    <div class="mobile-hero-cta">
+      <a href="publications.html" class="btn">My Research</a>
+      <a href="contact.html" class="btn secondary">Get in Touch</a>
+    </div>
+  </div>
+</div>
 
 <section class="hero-section">
   <div class="hero-spacer"></div>

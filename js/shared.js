@@ -88,71 +88,85 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     if (photoWrapper) {
-        // === HOME PAGE: full photo animation ===
-        const maxScroll = 400;
+        // === HOME PAGE ===
         const isMobile = window.innerWidth < 768;
-        const startSize = isMobile ? 180 : 300;
-        const endSize = isMobile ? 40 : 50;
-        const startPhotoY = isMobile ? 140 : 220;
-        let startPhotoX = 0;
 
-        // On mobile, show identity text immediately (hamburger is always visible)
         if (isMobile) {
+            // === MOBILE HOME: static layout, no photo animation ===
+            // photo-wrapper is hidden via CSS; mobile-hero shows profile photo.
             identityText.classList.add('visible');
-        }
 
-        const recalculatePositions = () => {
-            photoWrapper.style.transform = '';
-            photoWrapper.style.width = `${endSize}px`;
-            const rect = photoWrapper.getBoundingClientRect();
-            const originX = rect.left;
-            const screenCenter = window.innerWidth / 2;
-            const halfImage = startSize / 2;
-            startPhotoX = (screenCenter - halfImage) - originX;
-            updateUI();
-        };
+            // Header fades in as user scrolls past the mobile hero section
+            const mobileHero = document.getElementById('mobile-hero');
+            const mobileHeroFadeEnd = () => (mobileHero ? mobileHero.offsetHeight * 0.55 : 200);
 
-        const updateUI = () => {
-            const scrollY = window.scrollY;
-            let progress = Math.min(scrollY / maxScroll, 1);
-            const currentSize = startSize - (progress * (startSize - endSize));
-            const currentX = startPhotoX * (1 - progress);
-            const currentY = startPhotoY * (1 - progress);
-            photoWrapper.style.width = `${currentSize}px`;
-            photoWrapper.style.height = `${currentSize}px`;
-            photoWrapper.style.transform = `translate(${currentX}px, ${currentY}px)`;
-            header.style.backgroundColor = `rgba(255, 255, 255, ${progress * 0.7})`;
-            header.style.borderBottom = `1px solid rgba(0, 0, 0, ${progress * 0.05})`;
-            header.style.backdropFilter = `blur(${progress * 12}px)`;
-            header.style.webkitBackdropFilter = `blur(${progress * 12}px)`;
+            const handleMobileHomeScroll = () => {
+                const progress = Math.min(window.scrollY / mobileHeroFadeEnd(), 1);
+                header.style.backgroundColor  = `rgba(250, 250, 250, ${progress * 0.95})`;
+                header.style.backdropFilter    = `blur(${progress * 12}px)`;
+                header.style.webkitBackdropFilter = `blur(${progress * 12}px)`;
+                header.style.borderBottom      = `1px solid rgba(0, 0, 0, ${progress * 0.07})`;
+                updateStickyHeaders();
+            };
 
-            // Nav opacity: only animate on desktop; mobile uses hamburger
-            if (!isMobile) {
+            window.addEventListener('scroll', handleMobileHomeScroll, { passive: true });
+            handleMobileHomeScroll();
+
+        } else {
+            // === DESKTOP HOME: full photo animation ===
+            const maxScroll = 400;
+            const startSize = 300;
+            const endSize = 50;
+            const startPhotoY = 220;
+            let startPhotoX = 0;
+
+            const recalculatePositions = () => {
+                photoWrapper.style.transform = '';
+                photoWrapper.style.width = `${endSize}px`;
+                const rect = photoWrapper.getBoundingClientRect();
+                const originX = rect.left;
+                const screenCenter = window.innerWidth / 2;
+                const halfImage = startSize / 2;
+                startPhotoX = (screenCenter - halfImage) - originX;
+                updateUI();
+            };
+
+            const updateUI = () => {
+                const scrollY = window.scrollY;
+                let progress = Math.min(scrollY / maxScroll, 1);
+                const currentSize = startSize - (progress * (startSize - endSize));
+                const currentX = startPhotoX * (1 - progress);
+                const currentY = startPhotoY * (1 - progress);
+                photoWrapper.style.width = `${currentSize}px`;
+                photoWrapper.style.height = `${currentSize}px`;
+                photoWrapper.style.transform = `translate(${currentX}px, ${currentY}px)`;
+                header.style.backgroundColor = `rgba(255, 255, 255, ${progress * 0.7})`;
+                header.style.borderBottom = `1px solid rgba(0, 0, 0, ${progress * 0.05})`;
+                header.style.backdropFilter = `blur(${progress * 12}px)`;
+                header.style.webkitBackdropFilter = `blur(${progress * 12}px)`;
+
                 navLinks.style.opacity = progress;
                 navLinks.style.pointerEvents = progress > 0.5 ? 'auto' : 'none';
-            }
 
-            // Identity text: animate on desktop; already shown on mobile above
-            if (!isMobile) {
                 if (progress > 0.8) {
                     identityText.classList.add('visible');
                 } else {
                     identityText.classList.remove('visible');
                 }
-            }
 
-            updateStickyHeaders();
-        };
+                updateStickyHeaders();
+            };
 
-        window.addEventListener('scroll', updateUI);
-        window.addEventListener('resize', () => {
-            if (Math.abs(window.innerWidth - (window.lastWidth || window.innerWidth)) > 50) {
-                location.reload();
-            }
-            window.lastWidth = window.innerWidth;
-        });
+            window.addEventListener('scroll', updateUI);
+            window.addEventListener('resize', () => {
+                if (Math.abs(window.innerWidth - (window.lastWidth || window.innerWidth)) > 50) {
+                    location.reload();
+                }
+                window.lastWidth = window.innerWidth;
+            });
 
-        recalculatePositions();
+            recalculatePositions();
+        }
 
     } else {
         // === INNER PAGES: show header fully immediately, no photo animation ===
@@ -193,6 +207,9 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initBokeh() {
+    // Canvas is hidden on mobile via CSS; skip setup entirely to save CPU/battery
+    if (window.innerWidth < 768) return;
+
     const canvas = document.getElementById('bokeh-canvas');
     const ctx = canvas.getContext('2d');
     let width, height;
