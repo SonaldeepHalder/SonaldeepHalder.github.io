@@ -8,49 +8,51 @@ document.addEventListener('DOMContentLoaded', () => {
     const hamburgerBtn = document.getElementById('hamburger-btn');
 
     // --- HAMBURGER MENU TOGGLE (all pages, mobile only) ---
+    // iOS Safari: overflow:hidden alone doesn't lock scroll. We use position:fixed
+    // on the body (set by CSS .nav-open), saving/restoring scrollY via style.top.
+    let _navScrollY = 0;
+
+    function openNav() {
+        _navScrollY = window.scrollY;
+        document.body.style.top = `-${_navScrollY}px`;
+        document.body.classList.add('nav-open');
+        navLinks.classList.add('is-open');
+        hamburgerBtn.setAttribute('aria-expanded', 'true');
+        hamburgerBtn.setAttribute('aria-label', 'Close navigation');
+        const firstLink = navLinks.querySelector('a');
+        if (firstLink) requestAnimationFrame(() => firstLink.focus());
+    }
+
+    function closeNav() {
+        document.body.classList.remove('nav-open');
+        document.body.style.top = '';
+        window.scrollTo(0, _navScrollY);
+        navLinks.classList.remove('is-open');
+        hamburgerBtn.setAttribute('aria-expanded', 'false');
+        hamburgerBtn.setAttribute('aria-label', 'Open navigation');
+    }
+
     if (hamburgerBtn) {
         hamburgerBtn.addEventListener('click', () => {
-            const isOpen = hamburgerBtn.getAttribute('aria-expanded') === 'true';
-            const willOpen = !isOpen;
-            hamburgerBtn.setAttribute('aria-expanded', String(willOpen));
-            hamburgerBtn.setAttribute('aria-label', willOpen ? 'Close navigation' : 'Open navigation');
-            navLinks.classList.toggle('is-open', willOpen);
-            document.body.classList.toggle('nav-open', willOpen);
-
-            if (willOpen) {
-                // Move focus to first nav link for keyboard/screen reader users
-                const firstLink = navLinks.querySelector('a');
-                if (firstLink) requestAnimationFrame(() => firstLink.focus());
-            }
+            hamburgerBtn.getAttribute('aria-expanded') === 'true' ? closeNav() : openNav();
         });
 
         // Close nav when a nav link is clicked
         navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                hamburgerBtn.setAttribute('aria-expanded', 'false');
-                hamburgerBtn.setAttribute('aria-label', 'Open navigation');
-                navLinks.classList.remove('is-open');
-                document.body.classList.remove('nav-open');
-            });
+            link.addEventListener('click', closeNav);
         });
 
-        // Close nav when clicking outside the header area
+        // Close nav when tapping outside the header/nav area
         document.addEventListener('click', (e) => {
             if (!hamburgerBtn.contains(e.target) && !navLinks.contains(e.target)) {
-                hamburgerBtn.setAttribute('aria-expanded', 'false');
-                hamburgerBtn.setAttribute('aria-label', 'Open navigation');
-                navLinks.classList.remove('is-open');
-                document.body.classList.remove('nav-open');
+                closeNav();
             }
         });
 
         // Escape key closes menu and returns focus to the hamburger button
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && hamburgerBtn.getAttribute('aria-expanded') === 'true') {
-                hamburgerBtn.setAttribute('aria-expanded', 'false');
-                hamburgerBtn.setAttribute('aria-label', 'Open navigation');
-                navLinks.classList.remove('is-open');
-                document.body.classList.remove('nav-open');
+                closeNav();
                 hamburgerBtn.focus();
             }
         });

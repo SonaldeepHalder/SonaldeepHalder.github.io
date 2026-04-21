@@ -6,6 +6,16 @@
 /* ── MOBILE HERO (home page only) — hidden on desktop ── */
 .mobile-hero { display: none; }
 
+/* ── SAFARI iOS: Remove tap highlight flash on all interactive elements ── */
+a, button, summary, [role="button"] {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* ── SAFARI iOS: Eliminate 300ms tap delay ── */
+a, button, .btn, summary, details {
+    touch-action: manipulation;
+}
+
 /* Nav link entrance animation */
 @keyframes m-link-in {
     from { opacity: 0; transform: translateY(16px); }
@@ -21,6 +31,22 @@
     :root {
         --header-height: 60px;
         --mobile-gutter: 24px;
+    }
+
+    /* ── iOS Safari scroll lock: overflow:hidden alone doesn't prevent scroll;
+           position:fixed + saved scroll-top (set by JS) is the reliable fix ── */
+    body.nav-open {
+        overflow: hidden;
+        position: fixed;
+        width:    100%;
+        /* JS sets body.style.top = -scrollY before adding nav-open,
+           and restores scrollY when removing it                        */
+    }
+
+    /* ── SAFARI iOS: inputs/textareas < 16px trigger auto-zoom on focus.
+           Force 16px (1rem) to prevent the viewport jumping. ── */
+    input, textarea, select {
+        font-size: 1rem !important;
     }
 
     /* ── 2. Background — no bokeh canvas ── */
@@ -90,14 +116,15 @@
          • z-index: 1001 — covers the fixed header (1000)
     ──────────────────────────────────────── */
     .nav-links {
-        /* explicit sides for full Safari compat */
-        position:  fixed;
+        /* explicit sides for full Safari compat — do NOT use inset shorthand */
+        position: fixed;
         top:    0;
         right:  0;
         bottom: 0;
         left:   0;
-        width:  100%;
-        height: 100%;
+        /* width/height intentionally omitted: top/right/bottom/left already
+           fully constrain the box, and explicit 100% can misfire on Safari
+           when the URL bar slides away mid-scroll */
 
         flex-direction:  column;
         align-items:     center;
