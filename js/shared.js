@@ -59,17 +59,28 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- STICKY SLAB GRADIENT LOGIC (all pages) ---
+    // Read all rects first, then write all styles, to avoid layout thrash
+    // (interleaved getBoundingClientRect + style writes force synchronous
+    // layout on every iteration).
+    const stickyState = new Array(stickyHeadings.length);
     const updateStickyHeaders = () => {
         const triggerPoint = 80;
         const fadeRange = 150;
-        stickyHeadings.forEach(heading => {
-            const top = heading.getBoundingClientRect().top;
+
+        for (let i = 0; i < stickyHeadings.length; i++) {
+            const top = stickyHeadings[i].getBoundingClientRect().top;
             let stuckProgress = 0;
             if (top <= triggerPoint) {
                 stuckProgress = 1;
             } else if (top < triggerPoint + fadeRange) {
                 stuckProgress = 1 - ((top - triggerPoint) / fadeRange);
             }
+            stickyState[i] = stuckProgress;
+        }
+
+        for (let i = 0; i < stickyHeadings.length; i++) {
+            const heading = stickyHeadings[i];
+            const stuckProgress = stickyState[i];
             const alpha = stuckProgress * 0.7;
             const blurVal = stuckProgress * 20;
             const shadowAlpha = stuckProgress * 0.08;
@@ -86,7 +97,22 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 heading.classList.remove('is-stuck');
             }
-        });
+        }
+    };
+
+    // Coalesce scroll events into one update per animation frame. Without this,
+    // high-refresh-rate displays (120Hz trackpads/displays) fire scroll events
+    // faster than the browser can paint, doing redundant work each event.
+    const rafThrottle = (fn) => {
+        let ticking = false;
+        return () => {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(() => {
+                ticking = false;
+                fn();
+            });
+        };
     };
 
     if (photoWrapper) {
@@ -111,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 updateStickyHeaders();
             };
 
-            window.addEventListener('scroll', handleMobileHomeScroll, { passive: true });
+            window.addEventListener('scroll', rafThrottle(handleMobileHomeScroll), { passive: true });
             handleMobileHomeScroll();
 
         } else {
@@ -159,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 updateStickyHeaders();
             };
 
-            window.addEventListener('scroll', updateUI);
+            window.addEventListener('scroll', rafThrottle(updateUI), { passive: true });
             window.addEventListener('resize', () => {
                 if (Math.abs(window.innerWidth - (window.lastWidth || window.innerWidth)) > 50) {
                     location.reload();
@@ -185,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         identityText.classList.add('visible');
-        window.addEventListener('scroll', updateStickyHeaders);
+        window.addEventListener('scroll', rafThrottle(updateStickyHeaders), { passive: true });
     }
 
     // --- REVEAL ANIMATIONS (all pages) ---
@@ -197,7 +223,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { threshold: 0.15 });
     revealElements.forEach(el => revealObserver.observe(el));
 
-    initBokeh();
+    // Defer the bokeh canvas until the browser is idle so it doesn't compete
+    // with first paint and the initial scroll handler work — biggest win for
+    // perceived smoothness on initial load.
+    if ('requestIdleCallback' in window) {
+        requestIdleCallback(initBokeh, { timeout: 1500 });
+    } else {
+        setTimeout(initBokeh, 200);
+    }
 
     // --- Active nav link highlighting ---
     const currentFile = window.location.pathname.split('/').pop() || 'index.html';
