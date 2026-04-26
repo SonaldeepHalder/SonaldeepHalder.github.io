@@ -161,7 +161,7 @@ a, button, .btn, summary, details {
 
     /* Site name watermark at top of overlay */
     .nav-links::before {
-        content: 'Sonaldeep Halder';
+        content: 'Sonaldeep Halder' / '';
         position: absolute;
         top: max(20px, calc(env(safe-area-inset-top, 0px) + 16px));
         left: 50%;

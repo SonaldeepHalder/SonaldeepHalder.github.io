@@ -85,7 +85,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const blurVal = stuckProgress * 20;
             const shadowAlpha = stuckProgress * 0.08;
             const borderAlpha = stuckProgress * 0.1;
-            heading.style.backgroundColor = `rgba(255, 255, 255, ${alpha})`;
+            const inDarkBg = heading.closest('.dark-bg');
+            heading.style.backgroundColor = inDarkBg ? 'transparent' : `rgba(255, 255, 255, ${alpha})`;
             heading.style.backdropFilter = `blur(${blurVal}px)`;
             heading.style.webkitBackdropFilter = `blur(${blurVal}px)`;
             heading.style.borderBottom = `1px solid rgba(0, 0, 0, ${borderAlpha})`;
@@ -174,7 +175,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 header.style.webkitBackdropFilter = `blur(${progress * 12}px)`;
 
                 navLinks.style.opacity = progress;
-                navLinks.style.pointerEvents = progress > 0.5 ? 'auto' : 'none';
 
                 if (progress > 0.8) {
                     identityText.classList.add('visible');

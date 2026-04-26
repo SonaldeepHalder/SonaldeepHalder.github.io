@@ -83,7 +83,7 @@ The `.page-hero` section uses `padding-top: calc(var(--header-height) + 60px)` t
 
 ## Contact Form
 
-Formspree action URL in `contact.html` is a placeholder (`https://formspree.io/f/placeholder`). Replace with a real Formspree endpoint when deploying.
+Formspree endpoint `xjgabnqb` is live in `js/contact.js` line 3. The form on `contact.html` is fully functional. To protect against spam, enable the domain whitelist in the Formspree dashboard so submissions are only accepted from `sonaldeephalder.github.io`.
 
 ## Key CSS Variables (`shared.css`)
 
