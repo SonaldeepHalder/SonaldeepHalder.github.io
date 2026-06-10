@@ -22,6 +22,12 @@ a, button, .btn, summary, details {
     to   { opacity: 1; transform: translateY(0); }
 }
 
+/* Mobile hero entrance animation */
+@keyframes m-hero-in {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
 /* ═══════════════════════════════════════════════════════ */
 /*  768px and below                                        */
 /* ═══════════════════════════════════════════════════════ */
@@ -29,6 +35,8 @@ a, button, .btn, summary, details {
 
     /* ── 1. Root tokens ── */
     :root {
+        /* --header-height: 60px — drives .sticky-title top (shared.css:249) and
+           .mobile-hero padding-top. Both resolve via var() — no explicit override needed. */
         --header-height: 60px;
         --mobile-gutter: 24px;
     }
@@ -44,8 +52,9 @@ a, button, .btn, summary, details {
     }
 
     /* ── SAFARI iOS: inputs/textareas < 16px trigger auto-zoom on focus.
-           Force 16px (1rem) to prevent the viewport jumping. ── */
-    input, textarea, select {
+           Force 16px (1rem) to prevent the viewport jumping. Button is included
+           to avoid a subtle size inconsistency vs. other interactive text. ── */
+    input, textarea, select, button {
         font-size: 1rem !important;
     }
 
@@ -149,7 +158,7 @@ a, button, .btn, summary, details {
         /* Reset the translateY(-10px) that shared.css applies */
         transform: translateY(0) !important;
 
-        transition: opacity 240ms cubic-bezier(0.16, 1, 0.3, 1);
+        transition: opacity 180ms cubic-bezier(0.16, 1, 0.3, 1);
         box-sizing: border-box;
         overflow:   hidden;
     }
@@ -324,7 +333,7 @@ a, button, .btn, summary, details {
     }
 
     .mobile-hero-role {
-        font-size:      0.7rem;
+        font-size:      0.75rem;   /* was 0.7rem — raised to stay above legibility floor */
         font-weight:    700;
         color:          var(--accent);
         letter-spacing: 0.1em;
@@ -368,7 +377,7 @@ a, button, .btn, summary, details {
     .mobile-hero-tags .tag {
         background:    var(--accent-subtle);
         color:         var(--accent);
-        font-size:     0.7rem;
+        font-size:     0.72rem;   /* was 0.7rem — small raise for legibility */
         font-weight:   600;
         padding:       5px 14px;
         border-radius: var(--radius-pill);
@@ -552,6 +561,236 @@ a, button, .btn, summary, details {
         padding: 40px 24px 36px;
     }
 
+    /* ────────────────────────────────────────
+       HERO ENTRANCE CHOREOGRAPHY (D1)
+       Staggered fade-up on load; compositor-only properties.
+    ──────────────────────────────────────── */
+    .mobile-profile-photo { animation: m-hero-in 560ms var(--ease-out)  60ms both; }
+    .mobile-hero-name     { animation: m-hero-in 560ms var(--ease-out) 140ms both; }
+    .mobile-hero-role,
+    .mobile-hero-affil    { animation: m-hero-in 560ms var(--ease-out) 220ms both; }
+    .mobile-divider       { animation: m-hero-in 560ms var(--ease-out) 290ms both; }
+    .mobile-hero-desc     { animation: m-hero-in 560ms var(--ease-out) 360ms both; }
+    .mobile-hero-tags     { animation: m-hero-in 560ms var(--ease-out) 430ms both; }
+    .mobile-hero-cta      { animation: m-hero-in 560ms var(--ease-out) 500ms both; }
+
+    /* ────────────────────────────────────────
+       PUBLICATION NUMBER CHIPS (D2)
+       Accent chip replaces grey number text.
+    ──────────────────────────────────────── */
+    .card .pub-number {
+        display:         inline-flex;
+        align-items:     center;
+        justify-content: center;
+        min-width:       26px;
+        height:          22px;
+        padding:         0 9px;
+        box-sizing:      border-box;
+        border-radius:   var(--radius-pill);
+        background:      var(--accent-subtle);
+        color:           var(--accent);
+        font-size:       0.72rem;
+        font-weight:     700;
+        letter-spacing:  0.04em;
+        margin:          0 0 10px;
+    }
+
+    /* DOI / arXiv — compact inline pill, not a hero CTA (D2)
+       Must come after the .buttons rule to win the cascade. */
+    .buttons.pub-actions {
+        flex-direction: row;
+        width:          auto;
+        align-self:     flex-start;
+        margin-top:     14px;
+    }
+    .buttons.pub-actions .btn,
+    .buttons.pub-actions .btn.secondary {
+        width:       auto;
+        min-height:  0;
+        padding:     10px 20px;
+        font-size:   0.78rem;
+        letter-spacing: 0.03em;
+    }
+
+    /* ────────────────────────────────────────
+       PREPRINT CARD IDENTITY (D3 / Bug 1 fix)
+       Amber left edge + wash; must come after .card rule.
+    ──────────────────────────────────────── */
+    .card.preprint-card {
+        border-left:      3px solid #f59e0b;
+        background-image: linear-gradient(135deg, rgba(245, 158, 11, 0.055) 0%, transparent 45%);
+    }
+
+    /* ────────────────────────────────────────
+       DARK FOOTER ROUNDED SHEET (D4)
+       Extends the existing .dark-bg rule.
+    ──────────────────────────────────────── */
+    .dark-bg {
+        border-radius: 28px 28px 0 0;
+        margin-top:    12px;
+        padding-top:   var(--space-4);
+        position:      relative;   /* needed for ::before anchor */
+    }
+    .dark-bg::before {
+        content:    '';
+        position:   absolute;
+        top:        0;
+        left:       12%;
+        right:      12%;
+        height:     1px;
+        background: linear-gradient(90deg, transparent, rgba(96, 165, 250, 0.55), transparent);
+        pointer-events: none;
+    }
+
+    /* ────────────────────────────────────────
+       TOUCH PRESS STATES (D6)
+       Tactile feedback on touch devices.
+    ──────────────────────────────────────── */
+    .btn:active {
+        transform:          scale(0.97);
+        transition-duration: 80ms;
+    }
+    details summary:active {
+        opacity:            0.55;
+        transition-duration: 80ms;
+    }
+    .nav-links a:active:not(.active) {
+        background: var(--bg-subtle);
+    }
+
+    /* ────────────────────────────────────────
+       STAGGERED CARD REVEAL (D5)
+       Children cascade 70ms apart within revealed sections.
+    ──────────────────────────────────────── */
+    .reveal .centered-container > .card,
+    .reveal .centered-container > .item {
+        opacity:    0;
+        transform:  translateY(18px);
+        transition:
+            opacity   var(--dur-slow) var(--ease-out),
+            transform var(--dur-slow) var(--ease-out);
+    }
+    .reveal.active .centered-container > .card,
+    .reveal.active .centered-container > .item {
+        opacity:   1;
+        transform: translateY(0);
+    }
+    .reveal.active .centered-container > .card:nth-child(2),
+    .reveal.active .centered-container > .item:nth-child(2) { transition-delay:  70ms; }
+    .reveal.active .centered-container > .card:nth-child(3),
+    .reveal.active .centered-container > .item:nth-child(3) { transition-delay: 140ms; }
+    .reveal.active .centered-container > .card:nth-child(4),
+    .reveal.active .centered-container > .item:nth-child(4) { transition-delay: 210ms; }
+    .reveal.active .centered-container > .card:nth-child(5),
+    .reveal.active .centered-container > .item:nth-child(5) { transition-delay: 280ms; }
+
+    /* ────────────────────────────────────────
+       HERO DOT-GRID TEXTURE (D8)
+       Ultra-low-contrast dot pattern behind mobile hero.
+       .mobile-hero::before is the radial glow; ::after is free.
+    ──────────────────────────────────────── */
+    .mobile-hero::after {
+        content:    '';
+        position:   absolute;
+        top:   0; right:  0; bottom: 0; left: 0;
+        background-image: radial-gradient(rgba(10, 10, 11, 0.07) 1px, transparent 1.5px);
+        background-size:  22px 22px;
+        -webkit-mask-image: radial-gradient(ellipse 90% 75% at 50% 28%, #000 0%, transparent 72%);
+        mask-image:         radial-gradient(ellipse 90% 75% at 50% 28%, #000 0%, transparent 72%);
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    /* ────────────────────────────────────────
+       NAV OVERLAY INDEX NUMBERS (D10)
+       Editorial 01–05 counter beside each link.
+       .nav-links::before = watermark (unchanged)
+       .nav-links a::before = free slot used here
+    ──────────────────────────────────────── */
+    .nav-links { counter-reset: navidx; }
+    .nav-links a {
+        counter-increment: navidx;
+    }
+    .nav-links a::before {
+        content:    counter(navidx, decimal-leading-zero) / '';
+        position:   absolute;
+        left:       16px;
+        top:        50%;
+        transform:  translateY(-50%);
+        font-size:  0.65rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        color:      var(--accent);
+        opacity:    0.55;
+        pointer-events: none;
+    }
+
+    /* ────────────────────────────────────────
+       STICKY-TITLE ACCENT TICK (D11)
+       28px gradient underline; JS writes backdrop-filter
+       and .is-stuck class — no conflict with ::after.
+    ──────────────────────────────────────── */
+    .sticky-title::after {
+        content:       '';
+        display:       block;
+        width:         28px;
+        height:        3px;
+        margin:        8px auto 0;
+        border-radius: 2px;
+        background:    linear-gradient(90deg, var(--accent), #7c3aed);
+    }
+
+}
+
+/* ────────────────────────────────────────
+   REDUCED MOTION — top-level guards
+   belt-and-braces alongside shared.css.
+   Scroll-driven animation-timeline ignores animation-duration
+   so we explicitly disable with content:none (D9).
+──────────────────────────────────────── */
+@media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+    /* Hero entrance (D1) */
+    .mobile-profile-photo, .mobile-hero-name, .mobile-hero-role,
+    .mobile-hero-affil, .mobile-divider, .mobile-hero-desc,
+    .mobile-hero-tags, .mobile-hero-cta { animation: none; }
+
+    /* Nav overlay links (UX11) */
+    .nav-links.is-open a { animation: none; opacity: 1; }
+
+    /* Staggered card reveal (D5) */
+    .reveal .centered-container > .card,
+    .reveal .centered-container > .item {
+        opacity: 1; transform: none; transition: none;
+    }
+}
+
+/* Scroll progress bar (D9) — @supports keeps it progressive enhancement */
+@supports (animation-timeline: scroll()) {
+    @media (max-width: 768px) {
+        @keyframes m-scroll-progress {
+            from { transform: scaleX(0); }
+            to   { transform: scaleX(1); }
+        }
+        body::after {
+            content:        '';
+            position:       fixed;
+            top:            env(safe-area-inset-top, 0px);
+            left:  0; right: 0;
+            height:         2px;
+            background:     linear-gradient(90deg, var(--accent), #7c3aed);
+            transform-origin: 0 50%;
+            transform:      scaleX(0);
+            animation:      m-scroll-progress auto linear both;
+            animation-timeline: scroll(root);
+            z-index:        1001;
+            pointer-events: none;
+        }
+        /* Hide when nav is open (body is position:fixed — progress is stale) */
+        body.nav-open::after { content: none; }
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    body::after { animation: none; content: none; }
 }
 
 

@@ -146,8 +146,21 @@ p  { line-height: 1.7; }
     background-color: rgba(250, 250, 250, 0);
     border-bottom: 1px solid transparent;
     transition: background-color var(--dur-normal) var(--ease-std),
-                border-color var(--dur-normal) var(--ease-std),
-                backdrop-filter var(--dur-normal) var(--ease-std);
+                border-color var(--dur-normal) var(--ease-std);
+}
+
+/* Header frosted-glass blur lives on a pseudo-element, NOT on .fixed-header
+   itself: backdrop-filter on the header would make it the containing block
+   for the position:fixed mobile nav overlay inside it, collapsing the
+   overlay to the header's box. JS drives --header-blur instead. */
+.fixed-header::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    z-index: -1;
+    backdrop-filter: blur(var(--header-blur, 0px));
+    -webkit-backdrop-filter: blur(var(--header-blur, 0px));
+    pointer-events: none;
 }
 
 .header-inner {
@@ -249,12 +262,19 @@ p  { line-height: 1.7; }
 }
 
 /* --- THE SLAB EFFECT (Stuck State) --- */
+/* Background, border, and shadow live here so CSS tooling can inspect them.
+   JS (shared.js updateStickyHeaders) only sets backdropFilter inline
+   (a dynamic blur value cannot be expressed as a CSS class alone). */
 .sticky-title.is-stuck {
-    background: rgba(250, 250, 250, 0.92);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    background:    rgba(250, 250, 250, 0.92);
     border-bottom: 2px solid var(--accent);
-    box-shadow: var(--shadow-md);
+    box-shadow:    var(--shadow-md);
+}
+/* Dark-bg sticky titles keep transparent background when stuck */
+.dark-bg .sticky-title.is-stuck {
+    background:    transparent;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+    box-shadow:    none;
 }
 
 /* --- SECTIONS --- */
@@ -310,6 +330,13 @@ p  { line-height: 1.7; }
 .card p + p,
 .item p + p {
     margin-top: var(--space-3);
+}
+
+/* Preprint cards — amber left accent + faint wash (D3 / Bug 1 fix).
+   Restores the visual distinction lost when inline style was removed for CSP. */
+.preprint-card {
+    border-left:      3px solid #f59e0b;
+    background-image: linear-gradient(135deg, rgba(245, 158, 11, 0.055) 0%, transparent 45%);
 }
 .dark-bg {
     background-color: #0a0a0b;
@@ -388,8 +415,23 @@ details summary {
 }
 details summary::-webkit-details-marker { display: none; }
 details[open] summary { margin-bottom: var(--space-3); }
-details[open] summary::before { content: '▲ ' / ''; font-size: 0.7em; }
-details:not([open]) summary::before { content: '▼ ' / ''; font-size: 0.7em; }
+
+/* Rotating chevron (D7) — replaces static ▼/▲ swap */
+details summary::before {
+    content:    '▸' / '';
+    font-size:  0.85em;
+    line-height: 1;
+    transition: transform var(--dur-normal) var(--ease-out);
+}
+details[open] summary::before { transform: rotate(90deg); }
+
+/* Abstract fade-slide on open (D7) */
+@keyframes abstract-in {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+details[open] > p { animation: abstract-in 260ms var(--ease-out); }
+
 details p {
     font-size: var(--text-sm);
     line-height: 1.8;
@@ -541,67 +583,9 @@ body.nav-open { overflow: hidden; }
     /* 4. Show hamburger */
     .hamburger { display: flex; }
 
-    /* 5. Mobile nav — polished full-width dropdown */
-    .nav-links {
-        position: fixed;
-        top: var(--header-height);
-        left: 0;
-        width: 100%;
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0;
-        padding: var(--space-3)
-                 max(var(--space-4), env(safe-area-inset-right, 0px) + var(--space-3))
-                 max(var(--space-6), env(safe-area-inset-bottom, 0px) + var(--space-4))
-                 max(var(--space-4), env(safe-area-inset-left, 0px) + var(--space-3));
-        background: rgba(250, 250, 250, 0.98);
-        backdrop-filter: blur(28px) saturate(200%);
-        -webkit-backdrop-filter: blur(28px) saturate(200%);
-        border-bottom: 1px solid var(--border-strong);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.10), 0 2px 8px rgba(0, 0, 0, 0.06);
-        z-index: 999;
-        opacity: 0;
-        pointer-events: none;
-        transform: translateY(-10px);
-        transition: opacity 180ms var(--ease-std), transform 180ms var(--ease-std);
-        max-width: 100%;
-        overflow-x: visible;
-        white-space: normal;
-    }
-
-    .nav-links.is-open {
-        opacity: 1;
-        pointer-events: auto;
-        transform: translateY(0);
-    }
-
-    /* 6. Nav links — generous 48px touch targets, pill highlight on active */
-    .nav-links a {
-        font-size: var(--text-base);
-        font-weight: 500;
-        padding: 14px var(--space-4);
-        width: 100%;
-        text-align: center;
-        box-sizing: border-box;
-        border-radius: var(--radius-md);
-        color: var(--text-secondary);
-        margin-bottom: 2px;
-        min-height: 48px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .nav-links a::after { display: none; }
-
-    .nav-links a.active {
-        background-color: var(--accent-subtle);
-        color: var(--accent);
-        font-weight: 600;
-        width: 100%;
-        margin: 0 0 2px 0;
-        border-radius: var(--radius-md);
-    }
+    /* 5./6. Mobile nav overlay styles live in mobile.css (full-screen overlay).
+       Do NOT redefine .nav-links here — duplicate definitions caused the
+       overlay sizing bug fixed in June 2026. */
 
     /* 7. Content sections */
     .content-section { padding-bottom: 56px; }
@@ -611,18 +595,17 @@ body.nav-open { overflow: hidden; }
         padding-bottom: max(var(--space-12), calc(var(--space-8) + env(safe-area-inset-bottom, 0px)));
     }
 
-    /* 9. Cards — accent left border gives visual rhythm */
+    /* 9. Cards — padding/spacing only; border and border-radius set by mobile.css
+       (which loads after this file). The accent left-border and radius-md values
+       here would be overridden by mobile.css's .card shorthand anyway. */
     .card {
-        padding: var(--space-5);
-        border-left: 3px solid var(--accent);
-        border-radius: var(--radius-md);
+        padding:       var(--space-5);
         margin-bottom: var(--space-4);
     }
 
     /* 10. Items — refined padding */
     .item {
-        padding: var(--space-5);
-        border-radius: var(--radius-md);
+        padding:       var(--space-5);
         margin-bottom: var(--space-3);
     }
 
@@ -693,3 +676,17 @@ body.nav-open { overflow: hidden; }
     .buttons .btn,
     .buttons .btn.secondary { padding: 13px 20px; }
 }
+
+/* --- CLASSES FOR FORMER INLINE STYLES (CSP: style-src 'self' forbids style="") --- */
+.pub-number  { font-size: 0.8rem; color: #999; margin: 0 0 8px 0; }
+.pub-authors { margin: 6px 0 4px 0; }
+.pub-venue   { color: var(--accent); font-weight: 500; margin-bottom: 4px; }
+.pub-venue-preprint { color: #856404; font-weight: 500; margin-bottom: 4px; }
+.pub-actions { margin-top: 12px; margin-bottom: 0; }
+.pub-note    { font-size: 0.85rem; color: #666; margin-top: 6px; }
+.lead-note   { text-align: center; margin-bottom: 8px; }
+.mt-6        { margin-top: var(--space-6); }
+.cv-note     { margin-top: 4px; color: var(--text-secondary); }
+.cv-desc     { margin-top: 8px; color: var(--text-secondary); line-height: 1.7; }
+.prose       { text-align: left; line-height: 1.7; }
+.prose-gap   { margin-top: 16px; }

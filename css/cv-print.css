@@ -481,3 +481,6 @@ body {
     print-color-adjust: exact;
   }
 }
+
+/* Former inline style (CSP forbids style="") */
+.mt-2 { margin-top: 8px; }

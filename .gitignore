@@ -1,0 +1,10 @@
+# Unreferenced full-res source photos (8.6MB) — masters live outside the repo
+assets/photoForWebsite.jpg
+assets/photoForWebsiteCropped.jpg
+
+# IDE / OS noise
+.idea/
+.DS_Store
+
+# Local agent tooling
+.claude/

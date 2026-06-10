@@ -12,6 +12,23 @@ document.addEventListener('DOMContentLoaded', () => {
     // on the body (set by CSS .nav-open), saving/restoring scrollY via style.top.
     let _navScrollY = 0;
 
+    // Focus trap handler — declared here so openNav/closeNav share the same reference.
+    // Wraps Tab/Shift+Tab within the open nav overlay (WCAG 2.1.2).
+    function _trapFocus(e) {
+        if (e.key !== 'Tab') return;
+        const links = [...navLinks.querySelectorAll('a')];
+        if (!links.length) return;
+        const first = links[0];
+        const last  = links[links.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+        }
+    }
+
     function openNav() {
         _navScrollY = window.scrollY;
         document.body.style.top = `-${_navScrollY}px`;
@@ -21,9 +38,11 @@ document.addEventListener('DOMContentLoaded', () => {
         hamburgerBtn.setAttribute('aria-label', 'Close navigation');
         const firstLink = navLinks.querySelector('a');
         if (firstLink) requestAnimationFrame(() => firstLink.focus());
+        navLinks.addEventListener('keydown', _trapFocus);
     }
 
     function closeNav() {
+        navLinks.removeEventListener('keydown', _trapFocus);
         document.body.classList.remove('nav-open');
         document.body.style.top = '';
         window.scrollTo(0, _navScrollY);
@@ -81,18 +100,19 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let i = 0; i < stickyHeadings.length; i++) {
             const heading = stickyHeadings[i];
             const stuckProgress = stickyState[i];
-            const alpha = stuckProgress * 0.7;
-            const blurVal = stuckProgress * 20;
-            const shadowAlpha = stuckProgress * 0.08;
-            const borderAlpha = stuckProgress * 0.1;
-            const inDarkBg = heading.closest('.dark-bg');
-            heading.style.backgroundColor = inDarkBg ? 'transparent' : `rgba(255, 255, 255, ${alpha})`;
-            heading.style.backdropFilter = `blur(${blurVal}px)`;
-            heading.style.webkitBackdropFilter = `blur(${blurVal}px)`;
-            heading.style.borderBottom = `1px solid rgba(0, 0, 0, ${borderAlpha})`;
-            if (!heading.classList.contains('sticky-hero')) {
-                heading.style.boxShadow = `0 10px 20px -5px rgba(0, 0, 0, ${shadowAlpha})`;
+
+            // Only backdropFilter must be driven by JS (CSS cannot animate blur to a
+            // dynamic value). Background, border, and shadow live in .is-stuck (shared.css)
+            // so they remain inspectable/overridable by CSS without !important fights.
+            if (stuckProgress > 0) {
+                const blurVal = stuckProgress * 20;
+                heading.style.backdropFilter = `blur(${blurVal}px)`;
+                heading.style.webkitBackdropFilter = `blur(${blurVal}px)`;
+            } else {
+                heading.style.backdropFilter = '';
+                heading.style.webkitBackdropFilter = '';
             }
+
             if (stuckProgress > 0.8) {
                 heading.classList.add('is-stuck');
             } else {
@@ -116,9 +136,26 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     };
 
+    // --- CROSS-BREAKPOINT RELOAD (all pages) ---
+    // When the viewport crosses the 768px boundary (e.g. orientation change or
+    // resizing a browser window), reload so JS and CSS enter the correct path.
+    // Guarded to >50px change to avoid firing on iOS URL-bar height changes.
+    (function registerWidthReload() {
+        let lastWidth = window.innerWidth;
+        window.addEventListener('resize', () => {
+            if (Math.abs(window.innerWidth - lastWidth) > 50) {
+                location.reload();
+            }
+            lastWidth = window.innerWidth;
+        });
+    })();
+
     if (photoWrapper) {
         // === HOME PAGE ===
-        const isMobile = window.innerWidth < 768;
+        // Use matchMedia so that at exactly 768px, JS and CSS agree on which
+        // breakpoint is active (window.innerWidth < 768 would miss 768px exactly,
+        // while max-width: 768px in CSS includes it).
+        const isMobile = window.matchMedia('(max-width: 768px)').matches;
 
         if (isMobile) {
             // === MOBILE HOME: static layout, no photo animation ===
@@ -132,8 +169,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const handleMobileHomeScroll = () => {
                 const progress = Math.min(window.scrollY / mobileHeroFadeEnd(), 1);
                 header.style.backgroundColor  = `rgba(250, 250, 250, ${progress * 0.95})`;
-                header.style.backdropFilter    = `blur(${progress * 12}px)`;
-                header.style.webkitBackdropFilter = `blur(${progress * 12}px)`;
+                // Blur goes on .fixed-header::before via --header-blur: backdrop-filter
+                // directly on the header would turn it into the containing block for
+                // the fixed-position mobile nav overlay (collapsing it to header size).
+                header.style.setProperty('--header-blur', `${progress * 12}px`);
                 header.style.borderBottom      = `1px solid rgba(0, 0, 0, ${progress * 0.07})`;
                 updateStickyHeaders();
             };
@@ -171,8 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 photoWrapper.style.transform = `translate(${currentX}px, ${currentY}px)`;
                 header.style.backgroundColor = `rgba(255, 255, 255, ${progress * 0.7})`;
                 header.style.borderBottom = `1px solid rgba(0, 0, 0, ${progress * 0.05})`;
-                header.style.backdropFilter = `blur(${progress * 12}px)`;
-                header.style.webkitBackdropFilter = `blur(${progress * 12}px)`;
+                header.style.setProperty('--header-blur', `${progress * 12}px`);
 
                 navLinks.style.opacity = progress;
 
@@ -186,23 +224,15 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             window.addEventListener('scroll', rafThrottle(updateUI), { passive: true });
-            window.addEventListener('resize', () => {
-                if (Math.abs(window.innerWidth - (window.lastWidth || window.innerWidth)) > 50) {
-                    location.reload();
-                }
-                window.lastWidth = window.innerWidth;
-            });
-
             recalculatePositions();
         }
 
     } else {
         // === INNER PAGES: show header fully immediately, no photo animation ===
-        const isMobile = window.innerWidth < 768;
+        const isMobile = window.matchMedia('(max-width: 768px)').matches;
         header.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
         header.style.borderBottom = '1px solid rgba(0, 0, 0, 0.08)';
-        header.style.backdropFilter = 'blur(12px)';
-        header.style.webkitBackdropFilter = 'blur(12px)';
+        header.style.setProperty('--header-blur', '12px');
 
         // Only set nav opacity via JS on desktop; mobile hamburger controls it
         if (!isMobile) {
@@ -243,7 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function initBokeh() {
     // Canvas is hidden on mobile via CSS; skip setup entirely to save CPU/battery
-    if (window.innerWidth < 768) return;
+    if (window.matchMedia('(max-width: 768px)').matches) return;
 
     const canvas = document.getElementById('bokeh-canvas');
     const ctx = canvas.getContext('2d');

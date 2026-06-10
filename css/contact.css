@@ -241,3 +241,29 @@
   .success-checkmark__circle { stroke-dashoffset: 0; }
   .success-checkmark__check  { stroke-dashoffset: 0; }
 }
+
+/* Former inline style (CSP forbids style="") */
+.social-note { font-size: 0.78rem; color: #888; font-weight: 400; }
+
+/* ── Mobile overrides (UX6 + D6)
+   contact.css loads AFTER mobile.css, so mobile rules here use standard
+   specificity — no !important needed. font-size: 1rem !important in
+   mobile.css (input/textarea rule) intentionally overrides the 0.95rem above.  ── */
+@media (max-width: 768px) {
+    /* UX6: Remove compositing-heavy backdrop-filter on form inputs on mobile.
+       Simultaneous blur on 3 elements causes visible jank on low-end Android
+       during keyboard appearance. */
+    .contact-form input,
+    .contact-form textarea {
+        background:           var(--bg-elevated);
+        backdrop-filter:      none;
+        -webkit-backdrop-filter: none;
+    }
+
+    /* D6: Tactile press feedback on social cards */
+    .social-link:active {
+        transform:           scale(0.98);
+        background:          var(--bg-elevated);
+        transition-duration: 80ms;
+    }
+}
