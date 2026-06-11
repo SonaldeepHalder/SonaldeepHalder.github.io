@@ -1,3 +1,8 @@
+// Mobile layout applies at narrow widths OR short viewports (phone landscape).
+// Must match the media query wrapping the mobile blocks in mobile.css /
+// shared.css / home.css / pages.css / contact.css.
+const MOBILE_MEDIA = '(max-width: 768px), (max-height: 500px)';
+
 document.addEventListener('DOMContentLoaded', () => {
 
     const photoWrapper = document.getElementById('photo-wrapper');
@@ -148,6 +153,19 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             lastWidth = window.innerWidth;
         });
+
+        // The width guard above misses height-only crossings of the short-viewport
+        // breakpoint (e.g. shrinking a desktop window vertically past 500px).
+        // Reload whenever the combined mobile media query flips. Safe against iOS
+        // URL-bar churn: with width ≤ 768px the query is already true regardless
+        // of height, so height changes can't flip it there.
+        const mq = window.matchMedia(MOBILE_MEDIA);
+        const onFlip = () => location.reload();
+        if (mq.addEventListener) {
+            mq.addEventListener('change', onFlip);
+        } else if (mq.addListener) {
+            mq.addListener(onFlip); // Safari < 14
+        }
     })();
 
     if (photoWrapper) {
@@ -155,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Use matchMedia so that at exactly 768px, JS and CSS agree on which
         // breakpoint is active (window.innerWidth < 768 would miss 768px exactly,
         // while max-width: 768px in CSS includes it).
-        const isMobile = window.matchMedia('(max-width: 768px)').matches;
+        const isMobile = window.matchMedia(MOBILE_MEDIA).matches;
 
         if (isMobile) {
             // === MOBILE HOME: static layout, no photo animation ===
@@ -229,7 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     } else {
         // === INNER PAGES: show header fully immediately, no photo animation ===
-        const isMobile = window.matchMedia('(max-width: 768px)').matches;
+        const isMobile = window.matchMedia(MOBILE_MEDIA).matches;
         header.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
         header.style.borderBottom = '1px solid rgba(0, 0, 0, 0.08)';
         header.style.setProperty('--header-blur', '12px');
@@ -273,7 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function initBokeh() {
     // Canvas is hidden on mobile via CSS; skip setup entirely to save CPU/battery
-    if (window.matchMedia('(max-width: 768px)').matches) return;
+    if (window.matchMedia(MOBILE_MEDIA).matches) return;
 
     const canvas = document.getElementById('bokeh-canvas');
     const ctx = canvas.getContext('2d');
@@ -281,7 +299,7 @@ function initBokeh() {
     let circles = [];
     let lastFrameTime = 0;
 
-    const isMobile = window.innerWidth < 768;
+    const isMobile = window.matchMedia(MOBILE_MEDIA).matches;
     const circleCount = isMobile ? 12 : 15;
     // On mobile cap at ~30fps to conserve battery; 0 means uncapped on desktop
     const frameInterval = isMobile ? 1000 / 30 : 0;

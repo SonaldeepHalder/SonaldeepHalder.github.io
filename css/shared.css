@@ -556,9 +556,11 @@ body.nav-open { overflow: hidden; }
 }
 
 /* ============================================ */
-/* === MOBILE REDESIGN ≤ 768px               === */
+/* === MOBILE REDESIGN ≤ 768px or short      === */
+/* === viewports (phone landscape) — keep in === */
+/* === sync with MOBILE_MEDIA in shared.js   === */
 /* ============================================ */
-@media (max-width: 768px) {
+@media (max-width: 768px), (max-height: 500px) {
 
     /* 1. Header — safe-area aware */
     .header-inner {
@@ -571,12 +573,12 @@ body.nav-open { overflow: hidden; }
     /* 2. Hide role & separator — preserve header width */
     .role, .separator { display: none; }
 
-    /* 3. Prevent name overflow on narrow screens */
+    /* 3. Prevent name overflow on narrow screens.
+       max-width lives in mobile.css (.name, 54vw) — single source of truth. */
     .name {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        max-width: 44vw;
         font-size: var(--text-sm);
     }
 

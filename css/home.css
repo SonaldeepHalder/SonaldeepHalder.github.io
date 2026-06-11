@@ -74,7 +74,7 @@
     letter-spacing: -0.03em;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 768px), (max-height: 500px) {
     .hero-section {
         padding-bottom: 40px;
     }

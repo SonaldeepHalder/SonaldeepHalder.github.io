@@ -33,6 +33,12 @@
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 .contact-form textarea { min-height: 140px; resize: vertical; }
+
+/* Short viewports (phone landscape): the soft keyboard leaves ~130px of
+   visible height — a 140px textarea pushes the submit button off-screen. */
+@media (max-height: 500px) {
+    .contact-form textarea { min-height: 80px; }
+}
 .contact-form button {
   padding: 12px 30px;
   background: var(--accent);
@@ -249,7 +255,7 @@
    contact.css loads AFTER mobile.css, so mobile rules here use standard
    specificity — no !important needed. font-size: 1rem !important in
    mobile.css (input/textarea rule) intentionally overrides the 0.95rem above.  ── */
-@media (max-width: 768px) {
+@media (max-width: 768px), (max-height: 500px) {
     /* UX6: Remove compositing-heavy backdrop-filter on form inputs on mobile.
        Simultaneous blur on 3 elements causes visible jank on low-end Android
        during keyboard appearance. */

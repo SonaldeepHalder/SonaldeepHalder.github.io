@@ -78,7 +78,17 @@ The single JS file branches on whether `#photo-wrapper` exists in the DOM:
 
 Both paths share: sticky section title slab effect (`updateStickyHeaders`), reveal-on-scroll (`IntersectionObserver`), bokeh canvas animation, and active nav link highlighting via `window.location.pathname`.
 
-A cross-breakpoint reload listener is registered unconditionally on every page/branch — it calls `location.reload()` when `window.innerWidth` changes by more than 50px, ensuring JS and CSS always agree on which breakpoint is active (e.g. orientation change on mobile). All `isMobile` checks use `window.matchMedia('(max-width: 768px)').matches` to align exactly with the CSS `max-width: 768px` breakpoint.
+A cross-breakpoint reload listener is registered unconditionally on every page/branch — it calls `location.reload()` when `window.innerWidth` changes by more than 50px, and also whenever the mobile media query flips (covers height-only crossings), ensuring JS and CSS always agree on which breakpoint is active (e.g. orientation change on mobile).
+
+## Mobile Breakpoint — Width OR Short Viewport
+
+The mobile layout triggers at `(max-width: 768px), (max-height: 500px)` — the height clause makes **phones in landscape** (e.g. 844×390, width > 768px) use the mobile layout (60px header, hamburger, mobile hero) instead of the desktop one, which doesn't fit in ~390px of height. iPad landscape (1024×~690) stays desktop. This combined query must stay in sync in ALL of:
+
+- `js/shared.js` — the `MOBILE_MEDIA` constant at the top of the file (used by every `isMobile` check and the bokeh skip)
+- `css/mobile.css` — main block, reduced-motion block, scroll-progress block inside `@supports`
+- `css/shared.css`, `css/home.css`, `css/pages.css`, `css/contact.css` — each file's mobile block
+
+An additional `@media (max-height: 500px)` block at the end of `mobile.css` compacts the nav overlay (smaller links, scrollable, `justify-content: flex-start` — a centered flex column clips overflow at both ends) and the mobile hero so they fit in ~390px of height. The `max-width: 480px` blocks remain width-only (small-phone portrait refinements).
 
 `updateStickyHeaders` only writes `backdropFilter`/`webkitBackdropFilter` as inline styles. Background, border, and box-shadow for the stuck state live in `.sticky-title.is-stuck` in `shared.css` so they remain CSS-inspectable.
 

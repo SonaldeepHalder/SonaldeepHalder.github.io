@@ -29,9 +29,10 @@ a, button, .btn, summary, details {
 }
 
 /* ═══════════════════════════════════════════════════════ */
-/*  768px and below                                        */
+/*  768px and below — OR short viewports (phone landscape) */
+/*  Keep this query in sync with MOBILE_MEDIA in shared.js */
 /* ═══════════════════════════════════════════════════════ */
-@media (max-width: 768px) {
+@media (max-width: 768px), (max-height: 500px) {
 
     /* ── 1. Root tokens ── */
     :root {
@@ -748,7 +749,8 @@ a, button, .btn, summary, details {
    Scroll-driven animation-timeline ignores animation-duration
    so we explicitly disable with content:none (D9).
 ──────────────────────────────────────── */
-@media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+@media (max-width: 768px) and (prefers-reduced-motion: reduce),
+       (max-height: 500px) and (prefers-reduced-motion: reduce) {
     /* Hero entrance (D1) */
     .mobile-profile-photo, .mobile-hero-name, .mobile-hero-role,
     .mobile-hero-affil, .mobile-divider, .mobile-hero-desc,
@@ -766,7 +768,7 @@ a, button, .btn, summary, details {
 
 /* Scroll progress bar (D9) — @supports keeps it progressive enhancement */
 @supports (animation-timeline: scroll()) {
-    @media (max-width: 768px) {
+    @media (max-width: 768px), (max-height: 500px) {
         @keyframes m-scroll-progress {
             from { transform: scaleX(0); }
             to   { transform: scaleX(1); }
@@ -846,4 +848,55 @@ a, button, .btn, summary, details {
 
     .buttons .btn,
     .buttons .btn.secondary { padding: 14px 20px; }
+}
+
+/* ═══════════════════════════════════════════════════════ */
+/*  Short viewports (phone landscape, height ≤ 500px)      */
+/*  Mobile layout is active via the combined query above;  */
+/*  these rules compact vertically-greedy elements so      */
+/*  nothing is clipped in ~390px of height.                */
+/* ═══════════════════════════════════════════════════════ */
+@media (max-height: 500px) {
+
+    /* Nav overlay: 5 × 56px links + 80px paddings ≈ 464px — would be
+       clipped (overflow: hidden) in a 390px-tall viewport. Compact the
+       links and let the list scroll instead of clipping. flex-start
+       instead of center: a centered flex container clips its overflow
+       at BOTH ends, making the top links unreachable. */
+    .nav-links {
+        justify-content: flex-start;
+        overflow-y:      auto;
+        -webkit-overflow-scrolling: touch;
+        padding-top:     calc(var(--header-height) + 12px);
+        padding-bottom:  max(24px, env(safe-area-inset-bottom, 0px) + 12px);
+        /* In landscape the notch sits on the left/right — keep the link
+           index numbers and text clear of it on notched phones. */
+        padding-left:    max(32px, env(safe-area-inset-left,  0px) + 16px);
+        padding-right:   max(32px, env(safe-area-inset-right, 0px) + 16px);
+        gap: 4px;
+    }
+
+    .nav-links a {
+        font-size:  1.25rem;
+        min-height: 44px;
+        padding:    8px 28px;
+    }
+
+    /* Hero: trim vertical padding and photo so the name + role are
+       visible without scrolling in landscape. */
+    .mobile-hero {
+        padding-top:    calc(var(--header-height) + 24px);
+        padding-bottom: 36px;
+    }
+
+    .mobile-profile-photo,
+    .mobile-profile-img {
+        width:  96px;
+        height: 96px;
+    }
+
+    .mobile-profile-photo { margin-bottom: 20px; }
+
+    /* Keep text measure readable on a wide-but-short screen */
+    .mobile-hero-content { max-width: 560px; }
 }
