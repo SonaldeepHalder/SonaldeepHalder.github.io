@@ -66,9 +66,14 @@ document.addEventListener('DOMContentLoaded', () => {
             link.addEventListener('click', closeNav);
         });
 
-        // Close nav when tapping outside the header/nav area
+        // Close nav when tapping outside the header/nav area — but ONLY while the
+        // menu is actually open. Without this guard, closeNav() ran on every click
+        // anywhere on the page, and its window.scrollTo(0, _navScrollY) (with
+        // _navScrollY still 0) yanked the page back to the top — e.g. when opening
+        // a "Show Abstract" toggle on the publications page.
         document.addEventListener('click', (e) => {
-            if (!hamburgerBtn.contains(e.target) && !navLinks.contains(e.target)) {
+            if (hamburgerBtn.getAttribute('aria-expanded') === 'true' &&
+                !hamburgerBtn.contains(e.target) && !navLinks.contains(e.target)) {
                 closeNav();
             }
         });
