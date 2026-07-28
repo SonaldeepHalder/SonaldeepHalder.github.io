@@ -151,24 +151,17 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     };
 
-    // --- CROSS-BREAKPOINT RELOAD (all pages) ---
-    // When the viewport crosses the 768px boundary (e.g. orientation change or
-    // resizing a browser window), reload so JS and CSS enter the correct path.
-    // Guarded to >50px change to avoid firing on iOS URL-bar height changes.
-    (function registerWidthReload() {
-        let lastWidth = window.innerWidth;
-        window.addEventListener('resize', () => {
-            if (Math.abs(window.innerWidth - lastWidth) > 50) {
-                location.reload();
-            }
-            lastWidth = window.innerWidth;
-        });
-
-        // The width guard above misses height-only crossings of the short-viewport
-        // breakpoint (e.g. shrinking a desktop window vertically past 500px).
-        // Reload whenever the combined mobile media query flips. Safe against iOS
-        // URL-bar churn: with width ≤ 768px the query is already true regardless
-        // of height, so height changes can't flip it there.
+    // --- CROSS-BREAKPOINT RE-INIT (all pages) ---
+    // The home page builds a different DOM + scroll handlers for mobile vs
+    // desktop at load, so when the breakpoint actually flips we reload to enter
+    // the correct path. Within a single breakpoint we do NOT reload: layouts
+    // respond to resize live — the desktop hero recomputes photo centering on
+    // resize (below), and the sticky/mobile scroll handlers read fresh geometry
+    // each frame. Listening to the media query (rather than a width delta) also
+    // covers height-only crossings (phone landscape) and is safe against iOS
+    // URL-bar churn: with width ≤ 768px the query is already true, so height
+    // changes can't flip it there.
+    (function registerBreakpointReload() {
         const mq = window.matchMedia(MOBILE_MEDIA);
         const onFlip = () => location.reload();
         if (mq.addEventListener) {
@@ -252,6 +245,10 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             window.addEventListener('scroll', rafThrottle(updateUI), { passive: true });
+            // Keep the photo's centered start position correct when the window is
+            // resized within the desktop breakpoint — no reload needed. (startPhotoX
+            // is derived from window.innerWidth, so it must be recomputed on resize.)
+            window.addEventListener('resize', rafThrottle(recalculatePositions), { passive: true });
             recalculatePositions();
         }
 

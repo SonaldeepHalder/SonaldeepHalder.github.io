@@ -78,7 +78,7 @@ The single JS file branches on whether `#photo-wrapper` exists in the DOM:
 
 Both paths share: sticky section title slab effect (`updateStickyHeaders`), reveal-on-scroll (`IntersectionObserver`), bokeh canvas animation, and active nav link highlighting via `window.location.pathname`.
 
-A cross-breakpoint reload listener is registered unconditionally on every page/branch — it calls `location.reload()` when `window.innerWidth` changes by more than 50px, and also whenever the mobile media query flips (covers height-only crossings), ensuring JS and CSS always agree on which breakpoint is active (e.g. orientation change on mobile).
+A cross-breakpoint reload listener is registered on every page/branch — it calls `location.reload()` **only when the mobile media query (`MOBILE_MEDIA`) actually flips**, so JS and CSS always agree on which breakpoint is active (covers both width and height-only crossings, e.g. orientation change). Resizing *within* a breakpoint does NOT reload: the desktop hero re-runs `recalculatePositions()` on `resize` to keep the photo centered, and the sticky/mobile scroll handlers read fresh geometry each frame. (Earlier versions also reloaded on any >50px width change — that was removed so ordinary desktop window resizing no longer reloads the page.)
 
 ## Mobile Breakpoint — Width OR Short Viewport
 
