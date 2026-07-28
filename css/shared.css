@@ -579,7 +579,7 @@ body.nav-open { overflow: hidden; }
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        font-size: var(--text-sm);
+        /* font-size + max-width live in mobile.css (.name) — single source of truth */
     }
 
     /* 4. Show hamburger */

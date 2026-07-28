@@ -85,7 +85,8 @@
         filter: blur(50px);
         opacity: 0.7;
     }
-    .hero-spacer { height: 320px; }
+    /* .hero-spacer intentionally not sized here: .hero-section is
+       display:none on mobile (mobile.css), so the spacer never renders. */
     .sticky-hero {
         font-size: clamp(1.5rem, 5.5vw, 1.9rem);
         line-height: 1.22;

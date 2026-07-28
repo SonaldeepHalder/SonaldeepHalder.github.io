@@ -41,6 +41,16 @@
     }
     .page-title { font-size: var(--text-2xl); padding: 0 var(--space-4); box-sizing: border-box; }
     .hero-subtext { font-size: var(--text-base); line-height: 1.7; padding: 0 var(--space-4); }
+
+    /* Enlarge inline DOI/arXiv links to a ~44px touch target on mobile.
+       11px top/bottom padding + 22px line-height = 44px. Desktop keeps the
+       compact 32px pill (mouse target) from the base rule above. */
+    .pub-doi-link {
+        min-height:  44px;
+        line-height: 22px;
+        padding:     11px 14px;
+        margin-left: 6px;
+    }
 }
 
 /* ----- CV page: publication list ----- */
