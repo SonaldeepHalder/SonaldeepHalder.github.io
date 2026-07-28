@@ -48,9 +48,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function closeNav() {
         navLinks.removeEventListener('keydown', _trapFocus);
+        // Only restore the saved scroll position if the menu was actually open
+        // (openNav applies position:fixed via .nav-open). Restoring unconditionally
+        // would scroll to _navScrollY — 0 unless the menu was opened — on every
+        // caller, e.g. a nav-link click on desktop where the menu never opens.
+        var wasOpen = document.body.classList.contains('nav-open');
         document.body.classList.remove('nav-open');
         document.body.style.top = '';
-        window.scrollTo(0, _navScrollY);
+        if (wasOpen) window.scrollTo(0, _navScrollY);
         navLinks.classList.remove('is-open');
         hamburgerBtn.setAttribute('aria-expanded', 'false');
         hamburgerBtn.setAttribute('aria-label', 'Open navigation');
