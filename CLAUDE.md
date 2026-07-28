@@ -114,7 +114,7 @@ The `.page-hero` section uses `padding-top: calc(var(--header-height) + 60px)` t
 
 ## Publications Page
 
-- Papers numbered 1–9 (published, newest first) + preprints section
+- Papers numbered 1–10 (published, newest first) + preprints section
 - Numbers are manual badges, not CSS counters — update them when adding/removing papers
 - Collapsible abstracts use native `<details>`/`<summary>` — no JS needed
 - Preprint cards use `.preprint-card` class for amber left-border + faint amber wash (defined in
