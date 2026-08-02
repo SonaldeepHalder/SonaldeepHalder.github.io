@@ -386,6 +386,55 @@ body {
   font-style: italic;
 }
 
+/* --- Small screens (screen only) ---------------------------
+   This sheet had no screen breakpoint at all, so on a 390px phone the
+   body + .cv-page padding (16 + 56 per side) left ~246px of usable width,
+   and the fixed 96px header photo squeezed the name into ~126px. The CV
+   page is linked from cv.html and is read on phones — it needs to reflow.
+   ----------------------------------------------------------- */
+@media screen and (max-width: 600px) {
+  body {
+    padding: 16px 12px 48px;
+  }
+
+  .cv-page {
+    padding: 24px 20px;
+    border-radius: 10px;
+  }
+
+  /* Photo above the name rather than stealing 120px of its line */
+  .cv-header {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+  }
+
+  .cv-header-photo {
+    width: 72px;
+    height: 72px;
+  }
+
+  .cv-name { font-size: 24px; }
+
+  /* Two ~110px columns of prose is unreadable — stack them */
+  .cv-skills-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .toolbar {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  /* 44px touch target for the one action on the page */
+  .btn-print {
+    min-height: 44px;
+  }
+}
+
 /* --- Print styles ----------------------------------------- */
 @media print {
   .no-print,

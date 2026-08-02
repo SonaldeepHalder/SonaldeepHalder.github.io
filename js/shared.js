@@ -55,7 +55,16 @@ document.addEventListener('DOMContentLoaded', () => {
         var wasOpen = document.body.classList.contains('nav-open');
         document.body.classList.remove('nav-open');
         document.body.style.top = '';
-        if (wasOpen) window.scrollTo(0, _navScrollY);
+        if (wasOpen) {
+            // While .nav-open is applied, position:fixed collapses the document to
+            // viewport height, so max scroll is 0. Reading offsetHeight forces the
+            // layout flush that restores the real scroll range — without it the
+            // scrollTo below clamps to 0 and dumps the user at the top of the page.
+            void document.body.offsetHeight;
+            // 'instant' guards against html { scroll-behavior: smooth } animating
+            // the restore (WebKit honours it for programmatic scrolls).
+            window.scrollTo({ top: _navScrollY, left: 0, behavior: 'instant' });
+        }
         navLinks.classList.remove('is-open');
         hamburgerBtn.setAttribute('aria-expanded', 'false');
         hamburgerBtn.setAttribute('aria-label', 'Open navigation');

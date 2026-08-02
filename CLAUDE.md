@@ -37,13 +37,41 @@ No server required. All paths are relative, so `file://` works correctly.
 │   └── shared.js       All JS for all pages (one file)
 ├── fonts/              Inter variable woff2 (latin + latin-ext, normal + italic)
 └── assets/
-    ├── profile-600.jpg              Profile photo, 600×600 — used by ALL <img> tags
+    ├── profile-600.jpg              Profile photo, 600×600 — largest srcset candidate
+    ├── profile-336.jpg              hero @2x/@3x
+    ├── profile-160.jpg              hero @1x / header avatar @3x
+    ├── profile-100.jpg              header avatar @1x/@2x
     ├── og-image.jpg                 1200×1117 — og:image / twitter:image on all pages
     ├── favicon.svg                  SH monogram favicon
     ├── apple-touch-icon.png         180×180 touch icon
     ├── photoForWebsiteCropped.jpg   Original full-res photo (source only, not referenced)
-    └── cv.pdf                        Downloadable CV
+    └── cv.pdf                        NOT LINKED — see "CV download" below
 ```
+
+## Profile photo — responsive srcset
+
+Every `<img>` carries the same 4-candidate `srcset`. The `sizes` attribute differs by role:
+
+- Inner-page header avatar (50px desktop / 36px mobile): `sizes="50px"`
+- `index.html` — **both** the desktop `.photo-wrapper` img and the `.mobile-profile-img`
+  use `sizes="(max-width: 768px) 112px, 300px"`. Keeping them identical is deliberate:
+  the two imgs then always resolve to the *same* candidate, so the one that is
+  `display: none` at that breakpoint costs no extra request.
+
+A phone at dpr3 fetches 22 KB instead of the old flat 55 KB; an inner page fetches 6.6 KB.
+Regenerate variants with Pillow (convert Display P3 → sRGB first, else stripping the
+profile shifts colour), quality 82, progressive, 4:2:0.
+
+## CV download
+
+`cv.html` links to `cv-print.html` (a styled HTML page with a Print/Save-as-PDF button),
+**not** to `assets/cv.pdf`. The button is labelled "Open Print-Ready CV" — do not relabel it
+"Download PDF" unless it actually serves a file.
+
+`assets/cv.pdf` is deliberately unlinked: it is a personal-details CV containing date of
+birth, father's name, religion, marital status, hostel address and a personal mobile number.
+It should not be surfaced from the public site. (It is still fetchable by direct URL —
+removing it from the repo is recommended.)
 
 ## Header Blur — Critical Constraint
 

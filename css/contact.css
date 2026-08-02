@@ -12,7 +12,10 @@
   border: 1px solid var(--border-strong);
   border-radius: 12px;
   font-family: 'Inter', sans-serif;
-  font-size: 0.95rem;
+  /* 16px unconditionally: iOS Safari zooms the viewport on focus for anything
+     smaller. The 1rem !important in mobile.css only covers the phone
+     breakpoints, leaving iPad portrait (820x1180) to zoom. */
+  font-size: 1rem;
   background: rgba(255,255,255,0.7);
   backdrop-filter: blur(10px);
   color: var(--text-main);
@@ -182,6 +185,11 @@
     transform 0.45s cubic-bezier(0.16,1,0.3,1) 0.1s;
 }
 .success-card.is-visible { opacity: 1; transform: translateY(0) scale(1); }
+/* An author `display: flex` beats the UA sheet's `[hidden] { display: none }`,
+   so without this the card keeps its ~458px of layout while merely transparent —
+   and under prefers-reduced-motion (which forces opacity: 1 below) it renders a
+   "Message sent!" confirmation on page load. */
+.success-card[hidden] { display: none; }
 
 /* --- ANIMATED CHECKMARK --- */
 .success-icon-ring { width: 72px; height: 72px; margin-bottom: 24px; flex-shrink: 0; }

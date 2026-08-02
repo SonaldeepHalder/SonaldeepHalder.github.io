@@ -112,6 +112,13 @@ body {
     outline-offset: 3px;
 }
 
+/* Global border-box. Without it, any `width: 100%` element that also has
+   horizontal padding renders wider than its container and spills to the right —
+   this shipped twice (the mobile hero CTA buttons, and .sticky-title hanging
+   20px off each edge of the viewport). Individual box-sizing declarations
+   elsewhere in the CSS are now redundant but harmless. */
+*, *::before, *::after { box-sizing: border-box; }
+
 html { scroll-behavior: smooth; }
 
 h1, h2, h3, h4 {
@@ -255,10 +262,16 @@ p  { line-height: 1.7; }
 
     background: transparent;
     border-bottom: 1px solid transparent;
-    backdrop-filter: blur(0px);
-    -webkit-backdrop-filter: blur(0px);
 
-    transition: all 0.3s ease-out;
+    /* backdrop-filter is deliberately NOT declared here and NOT transitioned.
+       JS writes it inline every scroll frame; a `transition: all` restarted a
+       fresh 300ms animation on it on every write, leaving the blur permanently
+       mid-transition and forcing the compositor to re-snapshot and re-blur a
+       full-width backdrop each frame. A base blur(0px) also made every sticky
+       title a backdrop root for nothing. */
+    transition: background-color 0.3s ease-out,
+                border-color     0.3s ease-out,
+                box-shadow       0.3s ease-out;
 }
 
 /* --- THE SLAB EFFECT (Stuck State) --- */
@@ -325,7 +338,6 @@ p  { line-height: 1.7; }
         transform var(--dur-normal) var(--ease-out),
         box-shadow var(--dur-normal) var(--ease-out),
         border-color var(--dur-normal) ease;
-    will-change: transform;
 }
 .card p + p,
 .item p + p {
@@ -497,6 +509,11 @@ details p {
 
 /* --- HOVER EFFECTS (pointer devices only — prevents sticky hover on touch screens) --- */
 @media (hover: hover) {
+    /* Promote only where the lift can actually fire. On touch this used to hold a
+       compositor layer per card — 11 on publications.html — for a hover state that
+       never runs. */
+    .card, .item { will-change: transform; }
+
     .card:hover, .item:hover {
         transform: translateY(-3px);
         box-shadow: var(--shadow-hover);
