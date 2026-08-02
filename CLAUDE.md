@@ -44,9 +44,13 @@ No server required. All paths are relative, so `file://` works correctly.
     ├── og-image.jpg                 1200×1117 — og:image / twitter:image on all pages
     ├── favicon.svg                  SH monogram favicon
     ├── apple-touch-icon.png         180×180 touch icon
-    ├── photoForWebsiteCropped.jpg   Original full-res photo (source only, not referenced)
-    └── cv.pdf                        NOT LINKED — see "CV download" below
+    └── photoForWebsiteCropped.jpg   Original full-res photo (gitignored, never published)
 ```
+
+`assets/cv.pdf` was **removed** — it was a personal-details CV (date of birth, father's
+name, religion, marital status, address, mobile number) that was tracked and served
+publicly. Do not re-add it. If a downloadable CV is wanted, export a fresh one from
+`cv-print.html`, which carries only professional information.
 
 ## Profile photo — responsive srcset
 
@@ -65,13 +69,12 @@ profile shifts colour), quality 82, progressive, 4:2:0.
 ## CV download
 
 `cv.html` links to `cv-print.html` (a styled HTML page with a Print/Save-as-PDF button),
-**not** to `assets/cv.pdf`. The button is labelled "Open Print-Ready CV" — do not relabel it
+**not** to a PDF file. The button is labelled "Open Print-Ready CV" — do not relabel it
 "Download PDF" unless it actually serves a file.
 
-`assets/cv.pdf` is deliberately unlinked: it is a personal-details CV containing date of
-birth, father's name, religion, marital status, hostel address and a personal mobile number.
-It should not be surfaced from the public site. (It is still fetchable by direct URL —
-removing it from the repo is recommended.)
+`cv-print.html` is public (linked from cv.html; `noindex` + robots.txt Disallow are
+advisory only). Keep it to professional contact details — the institutional email and
+profile links. A personal mobile number was removed from it for this reason.
 
 ## Header Blur — Critical Constraint
 
