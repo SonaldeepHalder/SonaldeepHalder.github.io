@@ -373,6 +373,9 @@ p  { line-height: 1.7; }
 .buttons { margin-top: var(--space-6); margin-bottom: 0; display: flex; gap: var(--space-3); flex-wrap: wrap; }
 .btn {
     padding: 13px 26px;
+    /* border-box so a `width: 100%` button (mobile stacked CTAs) stays inside
+       its container instead of overflowing by its horizontal padding */
+    box-sizing: border-box;
     background: var(--accent);
     color: white;
     text-decoration: none;
