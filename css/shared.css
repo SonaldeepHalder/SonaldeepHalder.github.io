@@ -278,16 +278,21 @@ p  { line-height: 1.7; }
 /* Background, border, and shadow live here so CSS tooling can inspect them.
    JS (shared.js updateStickyHeaders) only sets backdropFilter inline
    (a dynamic blur value cannot be expressed as a CSS class alone). */
+/* Frosted glass, matching the home hero: a light translucent tint over the
+   JS-driven backdrop blur (an opaque fill hides the frost), a hairline that
+   fades out at both edges, and a soft shadow that falls below the slab. */
 .sticky-title.is-stuck {
-    background:    rgba(250, 250, 250, 0.92);
-    border-bottom: 2px solid var(--accent);
-    box-shadow:    var(--shadow-md);
+    background-color: rgba(250, 250, 250, 0.42);
+    background-image: linear-gradient(90deg, transparent, rgba(10, 10, 11, 0.09) 50%, transparent);
+    background-size:  100% 1px;
+    background-position: bottom;
+    background-repeat: no-repeat;
+    box-shadow:       0 12px 28px -20px rgba(15, 23, 42, 0.28);
 }
-/* Dark-bg sticky titles keep transparent background when stuck */
 .dark-bg .sticky-title.is-stuck {
-    background:    transparent;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.15);
-    box-shadow:    none;
+    background-color: rgba(10, 10, 11, 0.3);
+    background-image: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.14) 50%, transparent);
+    box-shadow:       0 12px 28px -20px rgba(0, 0, 0, 0.6);
 }
 
 /* --- SECTIONS --- */
