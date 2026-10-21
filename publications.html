@@ -318,6 +318,25 @@
 
       <div class="card preprint-card">
         <span class="badge badge-preprint">Preprint</span>
+        <h3>Quantum Wavefunction Augmentation via Variational Autoencoders</h3>
+        <p class="meta pub-authors">
+          <strong>Sonaldeep Halder</strong>, Chayan Patra, Rahul Maitra
+        </p>
+        <p class="meta pub-venue-preprint">
+          arXiv:2609.07972 (September 2026)
+        </p>
+        <p class="pub-note">Introduces Q-WAVE: VAE-driven determinant-space expansion for SQD, demonstrated up to a 60-qubit Cr<sub>2</sub> system.</p>
+        <div class="buttons pub-actions">
+          <a href="https://arxiv.org/abs/2609.07972" class="btn" target="_blank" rel="noopener noreferrer">arXiv</a>
+        </div>
+        <details>
+          <summary>Show Abstract</summary>
+          <p>Sample-based quantum diagonalization (SQD) has emerged as a promising route for quantum-centric supercomputing, relying on classical diagonalization of the molecular Hamiltonian within a hardware-sampled determinant subspace. However, its accuracy degrades in strongly correlated regimes where the relevant determinant space exceeds what finite-shot sampling can capture. In this work, we introduce Quantum Wavefunction Augmentation via Variational Encoders (Q-WAVE), a hybrid method that combines determinants sampled via SqDRIFT Krylov circuits and configuration interaction singles and doubles (CISD) determinants with generative machine learning. Using a custom &beta;-annealed variational autoencoder (VAE) model, Q-WAVE iteratively expands this basis toward the variational ground state. The VAE learns the wavefunction&rsquo;s primary support structure from the combined hardware and CISD seed in a continuous latent space, generating new dominant determinants beyond any fixed excitation hierarchy. The resulting compact wavefunction exceeds what can be extracted from raw hardware samples alone. We demonstrate sub-millihartree accuracy compared to full configuration interaction for H<sub>2</sub>O and N<sub>2</sub> dissociation. Finally, we establish Q-WAVE&rsquo;s scalability on a 52-qubit ethylene system (achieving sub-millihartree accuracy versus CCSD(T)) and a highly correlated 60-qubit Cr<sub>2</sub> stress test that attains chemical accuracy upon a final perturbative correction.</p>
+        </details>
+      </div>
+
+      <div class="card preprint-card">
+        <span class="badge badge-preprint">Preprint</span>
         <h3>Physics-informed generative machine learning for accelerated quantum-centric supercomputing</h3>
         <p class="meta pub-authors">
           Chayan Patra, Dibyendu Mondal, <strong>Sonaldeep Halder</strong>, Dipanjali Halder, Mostafizur Rahaman Laskar, Richa Goel, Rahul Maitra
