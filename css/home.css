@@ -116,3 +116,29 @@
         padding: 0 var(--space-3);
     }
 }
+
+/* "Currently at" status pill under the hero headline */
+.hero-status {
+    display:        inline-flex;
+    align-items:    center;
+    gap:            var(--space-2);
+    margin:         0;
+    padding:        6px 14px;
+    font-size:      var(--text-sm);
+    font-weight:    500;
+    color:          var(--text-secondary);
+    background:     rgba(255, 255, 255, 0.7);
+    border:         1px solid var(--border);
+    border-radius:  var(--radius-pill);
+    box-shadow:     var(--shadow-sm);
+    max-width:      calc(100% - 2 * var(--space-4));
+    box-sizing:     border-box;
+}
+.hero-status-dot {
+    flex:          none;
+    width:         8px;
+    height:        8px;
+    border-radius: 50%;
+    background:    var(--accent);
+    box-shadow:    0 0 0 3px var(--accent-subtle);
+}

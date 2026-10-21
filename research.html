@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
-  <meta name="description" content="Sonaldeep Halder's research on quantum algorithms, generative AI for ansatz construction, and resource-efficient molecular simulation on NISQ hardware at IIT Bombay and RIKEN R-CCS.">
+  <meta name="description" content="Sonaldeep Halder's research on generative machine learning for quantum-centric supercomputing, including Q-WAVE (variational-autoencoder subspace expansion for sample-based quantum diagonalization), at IIT Bombay and RIKEN R-CCS.">
   <meta name="author" content="Sonaldeep Halder">
 
   <!-- Open Graph / Social sharing -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Sonaldeep Halder">
   <meta property="og:title" content="Research | Sonaldeep Halder">
-  <meta property="og:description" content="Sonaldeep Halder's research on quantum algorithms, generative AI for ansatz construction, and resource-efficient molecular simulation on NISQ hardware at IIT Bombay and RIKEN R-CCS.">
+  <meta property="og:description" content="Sonaldeep Halder's research on generative machine learning for quantum-centric supercomputing, including Q-WAVE (variational-autoencoder subspace expansion for sample-based quantum diagonalization), at IIT Bombay and RIKEN R-CCS.">
   <meta property="og:url" content="https://sonaldeephalder.github.io/research.html">
   <meta property="og:image" content="https://sonaldeephalder.github.io/assets/og-image.jpg">
   <meta property="og:image:alt" content="Sonaldeep Halder">
@@ -22,7 +22,7 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Research | Sonaldeep Halder">
-  <meta name="twitter:description" content="Sonaldeep Halder's research on quantum algorithms, generative AI for ansatz construction, and resource-efficient molecular simulation on NISQ hardware at IIT Bombay and RIKEN R-CCS.">
+  <meta name="twitter:description" content="Sonaldeep Halder's research on generative machine learning for quantum-centric supercomputing, including Q-WAVE (variational-autoencoder subspace expansion for sample-based quantum diagonalization), at IIT Bombay and RIKEN R-CCS.">
   <meta name="twitter:image" content="https://sonaldeephalder.github.io/assets/og-image.jpg">
 
   <link rel="canonical" href="https://sonaldeephalder.github.io/research.html">
@@ -98,7 +98,7 @@
 <section class="page-hero">
   <div class="hero-text-container">
     <h1 class="page-title">Research</h1>
-    <p class="hero-subtext">Bridging quantum computing, chemistry, and machine learning</p>
+    <p class="hero-subtext">Generative machine learning for quantum-centric supercomputing</p>
   </div>
 </section>
 
@@ -108,11 +108,41 @@
     <h2 class="sticky-title">Research Overview</h2>
     <div class="centered-container">
       <p class="prose">
-        My research sits at the intersection of quantum computing and quantum chemistry, with a focus on making molecular simulation practical on near-term hardware. Working in the group of <strong>Prof. Rahul Maitra</strong> at IIT Bombay, I develop resource-efficient quantum algorithms for electronic structure. I am currently an exchange researcher at the <strong>RIKEN Center for Computational Science (R-CCS)</strong> in Kobe, Japan, since October 2026, hosted by <strong>Prof. Takahito Nakajima</strong>. Pre-fault-tolerant quantum devices — known as NISQ machines — are limited by noise and short coherence times, which means the algorithms we run must be exceptionally resource-efficient.
+        I develop methods that let quantum computers and classical supercomputers work together on molecular electronic structure. Working in the group of <strong>Prof. Rahul Maitra</strong> at IIT Bombay, and currently as an exchange researcher at the <strong>RIKEN Center for Computational Science (R-CCS)</strong> in Kobe, Japan, hosted by <strong>Prof. Takahito Nakajima</strong>, I focus on <em>quantum-centric supercomputing</em>: the quantum processor samples the electronic configurations that matter, and classical hardware diagonalizes the Hamiltonian in that compact subspace.
       </p>
       <p class="prose prose-gap">
-        To address this, I develop methods that leverage Generative AI and machine learning — particularly Restricted Boltzmann Machines (RBM) — to intelligently construct quantum circuits (ansatzes) that encode the electronic structure of molecules with minimal gate depth. I also work on the Projective Quantum Eigensolver (PQE) framework and dynamic adaptive ansatz construction strategies, incorporating many-body perturbation theory for operator screening. My work has accumulated 120+ citations (Google Scholar). The goal is to reduce quantum resource requirements without sacrificing accuracy — enabling meaningful quantum advantage on today's hardware.
+        The limiting factor in this approach is the samples themselves. Finite shot budgets and hardware noise miss much of the wavefunction, especially in strongly correlated molecules. My current work uses generative machine learning to learn the structure of the wavefunction from a limited number of quantum samples and expand the subspace beyond what the hardware ever measured. This builds on my earlier work on machine-learning-assisted, shallow-depth ansatz construction for variational and projective quantum eigensolvers.
       </p>
+    </div>
+  </section>
+
+  <section class="content-section reveal">
+    <h2 class="sticky-title">Featured Work</h2>
+    <div class="centered-container">
+
+      <div class="card feature-card">
+        <span class="badge badge-lead">First author</span><span class="badge badge-preprint">Preprint</span>
+        <h3>Q-WAVE: Quantum Wavefunction Augmentation via Variational Autoencoders</h3>
+        <p class="meta pub-authors"><strong>Sonaldeep Halder</strong>, Chayan Patra, Rahul Maitra &middot; arXiv:2609.07972 (2026)</p>
+        <p class="feature-lede">
+          Sample-based quantum diagonalization (SQD) loses accuracy when the important part of the wavefunction is larger than what finite-shot sampling can capture. Q-WAVE fixes this by seeding a &beta;-annealed variational autoencoder with determinants from SqDRIFT Krylov circuits run on IBM Heron hardware, plus classical CISD determinants. The autoencoder learns where the wavefunction lives in a continuous latent space, proposes new dominant determinants beyond any fixed excitation level, and grows the subspace iteratively toward the variational ground state.
+        </p>
+        <div class="stat-row">
+          <div class="stat"><span class="stat-value">&lt; 1 mHa</span><span class="stat-label">error vs. full CI across H<sub>2</sub>O and N<sub>2</sub> dissociation</span></div>
+          <div class="stat"><span class="stat-value">52 qubits</span><span class="stat-label">ethylene, sub-millihartree agreement with CCSD(T)</span></div>
+          <div class="stat"><span class="stat-value">60 qubits</span><span class="stat-label">Cr<sub>2</sub> stress test, chemical accuracy after PT2 correction</span></div>
+        </div>
+        <ul class="feature-points">
+          <li><strong>Hybrid seed.</strong> Hardware samples bring multireference character that a purely classical seed cannot reach, and CISD fills in what the samples miss. On Cr<sub>2</sub>, the combined seed was the only variant whose energy landed within chemical accuracy.</li>
+          <li><strong>Compact wavefunctions.</strong> The generative loop reaches higher accuracy with far smaller diagonalization subspaces than standard SQD configuration recovery.</li>
+          <li><strong>Scales polynomially.</strong> The model size grows polynomially with qubit count, independent of the full determinant space, and diagonalization only ever runs in the selected subspace.</li>
+        </ul>
+        <div class="buttons pub-actions">
+          <a href="https://arxiv.org/abs/2609.07972" class="btn" target="_blank" rel="noopener noreferrer">Read on arXiv</a>
+          <a href="publications.html" class="btn secondary">All Publications</a>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -121,40 +151,40 @@
     <div class="centered-container">
 
       <div class="card">
-        <h3>Projective Quantum Eigensolver (PQE) &amp; VQE Frameworks</h3>
-        <p>Designing the Projective Quantum Eigensolver (PQE) and variational quantum eigensolver (VQE) variants — including adaptive ansatz construction — that accurately compute ground-state molecular energies. My work introduces Zero Noise Extrapolation (ZNE-PQE) and adiabatically decoupled subsystem evolution strategies to push accuracy on real hardware, while supervised machine learning aids dimensionality reduction in the parameter optimization landscape.</p>
+        <h3>Generative ML for Quantum-Centric Supercomputing</h3>
+        <p>Using generative models to recover and expand the configuration space sampled by quantum hardware in sample-based quantum diagonalization. Q-WAVE uses a variational autoencoder to grow the subspace beyond the measured samples. PIGen-SQD (<em>Quantum Science and Technology</em>, 2026) pairs generative models with physics-informed configuration screening from perturbative measures to reconstruct accurate states from noisy hardware samples.</p>
       </div>
 
       <div class="card">
         <h3>Generative AI for Ansatz Construction</h3>
-        <p>Using Restricted Boltzmann Machines (RBM) and other generative machine learning models — trained on the physics of electron correlation — to propose chemistry-inspired ansatz circuits. Rather than fixed templates, these dynamic ansatzes adapt to the molecule, predicting dominant high-rank determinants from low-rank training data. Bayesian hyperparameter optimization ensures efficient performance with minimal training overhead.</p>
+        <p>Using Restricted Boltzmann Machines and other generative models, trained on the physics of electron correlation, to propose chemistry-inspired ansatz circuits. Rather than fixed templates, these dynamic ansatzes adapt to the molecule, predicting dominant high-rank determinants from low-rank training data.</p>
+      </div>
+
+      <div class="card">
+        <h3>Projective &amp; Variational Quantum Eigensolvers</h3>
+        <p>Developing the Projective Quantum Eigensolver (PQE) and VQE variants with adaptive ansatz construction for ground-state molecular energies, including zero-noise extrapolated PQE and adiabatically decoupled subsystem evolution for accuracy on noisy hardware, and supervised machine learning for dimensionality reduction.</p>
       </div>
 
       <div class="card">
         <h3>NISQ-Era Resource Efficiency</h3>
-        <p>Many-body perturbation theoretical measures and supervised machine learning methods to screen and discard low-impact quantum gates before circuit execution. This dramatically reduces gate count and qubit requirements, making quantum chemistry calculations tractable on current hardware generations. Methods include the COMPASS protocol for operator commutativity prescreening and neural error mitigation techniques compatible with shallow ansatz circuits.</p>
+        <p>Perturbative measures and machine learning to screen out low-impact operators before circuit execution, reducing gate count and circuit depth. This includes the COMPASS protocol for operator commutativity prescreening.</p>
       </div>
 
     </div>
   </section>
 
   <section class="content-section reveal">
-    <h2 class="sticky-title">Ongoing Projects</h2>
+    <h2 class="sticky-title">Current Directions</h2>
     <div class="centered-container">
 
       <div class="card">
-        <h3>Adaptive Generative Models for Multi-Reference Systems</h3>
-        <p>Extending the generative AI ansatz framework to strongly correlated, multi-reference molecular systems — a notoriously hard problem for both classical and quantum approaches. Current work explores how generative models can be conditioned on multi-configurational reference states.</p>
-      </div>
-
-      <div class="card">
-        <h3>Noise-Aware Circuit Optimization</h3>
-        <p>Developing hardware-aware compilation strategies that tailor circuit structure to the specific noise profile of a target quantum device, integrating seamlessly with the dynamic ansatz generation pipeline.</p>
+        <h3>Strongly Correlated and Transition-Metal Systems</h3>
+        <p>Extending generative subspace expansion to multireference problems such as the chromium dimer, where both classical selected-CI methods and raw hardware sampling struggle.</p>
       </div>
 
       <div class="card">
         <h3>Benchmarking on Real Quantum Hardware</h3>
-        <p>Running and validating developed algorithms on IBM Quantum devices via Qiskit, including experiments on IBM Heron R2 and R3 quantum processors at scales up to 52 qubits. These large-scale demonstrations characterize the gap between ideal simulation and real-hardware performance, feeding results back into algorithm and circuit design for quantum-centric supercomputing.</p>
+        <p>Running and validating algorithms on IBM Quantum Heron processors through Qiskit, and feeding the gap between ideal simulation and hardware performance back into algorithm design for quantum-centric supercomputing.</p>
       </div>
 
     </div>
